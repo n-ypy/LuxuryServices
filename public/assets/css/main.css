@@ -2889,3 +2889,29 @@ Vertical Tab
     }
 }
 .fa.fa-eye.show-password.active{display: none;}
+
+.input-field ul li {
+    color: #A14747;
+}
+
+.checkbox ul li {
+    color: #A14747;
+}
+
+.input-field ul li::before {
+    content: "🤬 ";
+}
+
+.checkbox ul li::before {
+    content: url("../img/kim_jong_un.png");
+}
+
+#errormsg{
+    color: #A14747;
+    text-align: center;
+}
+
+#errormsg::before{
+    content: "🤬 ";
+
+}

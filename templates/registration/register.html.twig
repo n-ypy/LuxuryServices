@@ -1,85 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{parent()}} | Sign Up{% endblock %}
+{% block title %}
+	{{parent()}}
+	| Sign Up
+{% endblock %}
+
 
 {% block body %}
-<div class="base">
+	<div
+		class="base">
 
-    <!-- Page -->
-    <div class="page">
+		<!-- Page -->
+		<div
+			class="page">
 
-        <!-- Page Header-->
-        <section class="page-title page-title-bg fixed-bg overlay dark-5 padding-top-160 padding-bottom-80">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2 class="white-text">Register</h2>
-                        <span class="white-text">Welcome on board</span>
-                        <ol class="breadcrumb">
-                            <li><a href="{{ path('app_home') }}">Home</a></li>
-                            <li class="active">Register</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </section>
+			<!-- Page Header-->
+			<section class="page-title page-title-bg fixed-bg overlay dark-5 padding-top-160 padding-bottom-80">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h2 class="white-text">Register</h2>
+							<span class="white-text">Welcome on board</span>
+							<ol class="breadcrumb">
+								<li>
+									<a href="{{ path('app_home') }}">Home</a>
+								</li>
+								<li class="active">Register</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</section>
 
 
-        <!-- Page Content-->
-        <section class="section-padding gray-bg log-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-sm-offset-3 card card-panel">
-                        <h3 class="text-extrabold">Create a new account</h3>
-                        <form id="register-form" role="form" method="post" accept-char="UTF-8" autocomplete="off" data-parsley-validate>
+			<!-- Page Content-->
+			<section class="section-padding gray-bg log-section">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-sm-offset-3 card card-panel">
+							<h3 class="text-extrabold">Create a new account</h3>
+							{{ form_start(registrationForm, {'attr':  {'id': 'register-form', 'role': 'form', 'accept-char': 'UTF-8', 'autocomplete': 'off', 'data-parsley-validate': ''}}) }}
+							<input type="hidden" name="_token" value="">
 
-                            <input type="hidden" name="_token" value="">
 
-                            <div class="input-field">
-                                <input type="email" name="email" id="email" value=""
-                                       required
-                                       data-parsley-trigger="change"
-                                       data-parsley-error-message="A valid email address is required.">
-                                <label for="email">Email</label>
-                                <span class="help-block">Type your email address.</span>
-                            </div>
-                            <div class="input-field">
-                                <input type="password" name="password" id="password" value=""
-                                       required
-                                       data-parsley-trigger="change"
-                                       data-parsley-minlength="6"
-                                       data-parsley-error-message="The password must be at least 6 characters.">
-                                <label for="password">Password</label>
-                                <i class="fa fa-eye show-password"></i>
-                                <span class="help-block">Type your password.</span>
-                            </div>
-                            <div class="input-field">
-                                <input type="password" name="password_confirmation" id="password_confirmation" value=""
-                                       required
-                                       data-parsley-trigger="change"
-                                       data-parsley-equalto="#password"
-                                       data-parsley-error-message="Password does not match.">
-                                <label for="password_confirmation">Confirm Password</label>
-                                <i class="fa fa-eye show-password"></i>
-                                <span class="help-block">Confirm your password.</span>
-                            </div>
-                            <div class="checkbox">
-                                <input type="checkbox" name="accept-terms" value="1" id="accept-terms" required/>
-                                <label for="accept-terms">I have read and I accept the <a href="#!" target="_blank">Terms Of Use</a></label>
-                            </div>
+							<div class="input-field">
+								{{ form_widget(registrationForm.email, {'id': 'email'}) }}
+								{{ form_label(registrationForm.email) }}
+								{{ form_errors(registrationForm.email) }}
+								<span class="help-block">Type your email address.</span>
+							</div>
+							<div class="input-field">
+								{{ form_widget(registrationForm.password.first, {'id': 'password'}) }}
+								{{ form_label(registrationForm.password.first) }}
+								{{ form_errors(registrationForm.password.first,  {'attr':{'style': 'color: red;'}}) }}
+								<i class="fa fa-eye show-password"></i>
+								<span class="help-block">Type your password.</span>
+							</div>
+							<div class="input-field">
+								{{ form_widget(registrationForm.password.second, {'id': 'password_confirmation'}) }}
+								{{ form_label(registrationForm.password.second) }}
+								{{ form_errors(registrationForm.password.second) }}
 
-                            <button type="submit" class="btn btn-lg gradient secondary btn-block waves-effect waves-light mt-20 mb-20">Create an account</button>
-                            <div class="links">
-                                <a href="{{ path('app_login') }}">Already have an account? Click here</a>
-                            </div>
-                        </form>
-                    </div>
+								<i class="fa fa-eye show-password"></i>
+								<span class="help-block">Confirm your password.</span>
+							</div>
+							<div class="checkbox">
 
-                </div>
-            </div>
-        </section>
+								{{ form_widget(registrationForm.agreeTerms, {'id': 'accept-terms'}) }}
 
-    </div>
+								<label for="accept-terms">I have read and I accept the
+									<a href="#!" target="_blank">Terms Of Use</a>
+								</label>
+								{{ form_errors(registrationForm.agreeTerms) }}
+							</div>
+							<button type="submit" class="btn btn-lg gradient secondary btn-block waves-effect waves-light mt-20 mb-20">Create an account</button>
+							<div class="links">
+								<a href="{{ path('app_login') }}">Already have an account? Click here</a>
+							</div>
 
-</div>
+							{{ form_end(registrationForm) }}
+						</div>
+
+					</div>
+				</div>
+			</section>
+
+		</div>
+	</div>
 {% endblock %}
