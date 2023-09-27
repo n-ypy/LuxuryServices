@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JobType index{% endblock %}
+
+{% block body %}
+    <h1>JobType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>TypeValue</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for job_type in job_types %}
+            <tr>
+                <td>{{ job_type.id }}</td>
+                <td>{{ job_type.typeValue }}</td>
+                <td>
+                    <a href="{{ path('app_job_type_show', {'id': job_type.id}) }}">show</a>
+                    <a href="{{ path('app_job_type_edit', {'id': job_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_job_type_new') }}">Create new</a>
+{% endblock %}

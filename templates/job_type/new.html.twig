@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New JobType{% endblock %}
+
+{% block body %}
+    <h1>Create new JobType</h1>
+
+    {{ include('job_type/_form.html.twig') }}
+
+    <a href="{{ path('app_job_type_index') }}">back to list</a>
+{% endblock %}

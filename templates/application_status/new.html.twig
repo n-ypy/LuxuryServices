@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ApplicationStatus{% endblock %}
+
+{% block body %}
+    <h1>Create new ApplicationStatus</h1>
+
+    {{ include('application_status/_form.html.twig') }}
+
+    <a href="{{ path('app_application_status_index') }}">back to list</a>
+{% endblock %}

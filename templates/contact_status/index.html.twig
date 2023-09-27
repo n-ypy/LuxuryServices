@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ContactStatus index{% endblock %}
+
+{% block body %}
+    <h1>ContactStatus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>StatusValue</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contact_status in contact_statuses %}
+            <tr>
+                <td>{{ contact_status.id }}</td>
+                <td>{{ contact_status.statusValue }}</td>
+                <td>
+                    <a href="{{ path('app_contact_status_show', {'id': contact_status.id}) }}">show</a>
+                    <a href="{{ path('app_contact_status_edit', {'id': contact_status.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_contact_status_new') }}">Create new</a>
+{% endblock %}

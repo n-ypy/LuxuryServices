@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New GenderList{% endblock %}
+
+{% block body %}
+    <h1>Create new GenderList</h1>
+
+    {{ include('gender_list/_form.html.twig') }}
+
+    <a href="{{ path('app_gender_list_index') }}">back to list</a>
+{% endblock %}

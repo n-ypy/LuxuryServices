@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ContactStatus{% endblock %}
+
+{% block body %}
+    <h1>ContactStatus</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ contact_status.id }}</td>
+            </tr>
+            <tr>
+                <th>StatusValue</th>
+                <td>{{ contact_status.statusValue }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_contact_status_index') }}">back to list</a>
+
+    <a href="{{ path('app_contact_status_edit', {'id': contact_status.id}) }}">edit</a>
+
+    {{ include('contact_status/_delete_form.html.twig') }}
+{% endblock %}

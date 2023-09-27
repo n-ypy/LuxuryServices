@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New JobCategory{% endblock %}
+
+{% block body %}
+    <h1>Create new JobCategory</h1>
+
+    {{ include('job_category/_form.html.twig') }}
+
+    <a href="{{ path('app_job_category_index') }}">back to list</a>
+{% endblock %}

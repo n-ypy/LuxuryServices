@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Candidate{% endblock %}
+
+{% block body %}
+    <h1>Candidate</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ candidate.id }}</td>
+            </tr>
+            <tr>
+                <th>FirstName</th>
+                <td>{{ candidate.firstName }}</td>
+            </tr>
+            <tr>
+                <th>LastName</th>
+                <td>{{ candidate.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Adress</th>
+                <td>{{ candidate.adress }}</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>{{ candidate.country }}</td>
+            </tr>
+            <tr>
+                <th>Nationality</th>
+                <td>{{ candidate.nationality }}</td>
+            </tr>
+            <tr>
+                <th>IsPassportValid</th>
+                <td>{{ candidate.isPassportValid ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CurrentLocation</th>
+                <td>{{ candidate.currentLocation }}</td>
+            </tr>
+            <tr>
+                <th>DateOfBirth</th>
+                <td>{{ candidate.dateOfBirth ? candidate.dateOfBirth|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>PlaceOfBirth</th>
+                <td>{{ candidate.placeOfBirth }}</td>
+            </tr>
+            <tr>
+                <th>IsAvailable</th>
+                <td>{{ candidate.isAvailable ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>ShortDescription</th>
+                <td>{{ candidate.shortDescription }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ candidate.createdAt ? candidate.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_candidate_index') }}">back to list</a>
+
+    <a href="{{ path('app_candidate_edit', {'id': candidate.id}) }}">edit</a>
+
+    {{ include('candidate/_delete_form.html.twig') }}
+{% endblock %}
