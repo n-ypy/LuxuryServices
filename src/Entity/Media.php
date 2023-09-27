@@ -19,6 +19,9 @@ class Media
     #[ORM\OneToOne(mappedBy: 'passportFile', cascade: ['persist', 'remove'])]
     private ?Candidate $candidate = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +57,18 @@ class Media
         }
 
         $this->candidate = $candidate;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
+    {
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
 
         return $this;
     }

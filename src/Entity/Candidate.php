@@ -263,9 +263,9 @@ class Candidate
         return $this->isAvailable;
     }
 
-    public function setIsAvailable(?bool $isAvailable): static
+    public function setIsAvailable(?bool $isAvailable = null): static
     {
-        $this->isAvailable = $isAvailable;
+        $this->isAvailable = $isAvailable ?? false;
 
         return $this;
     }
@@ -353,9 +353,9 @@ class Candidate
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
 
         return $this;
     }

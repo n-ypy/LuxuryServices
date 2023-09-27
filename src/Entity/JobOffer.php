@@ -97,9 +97,9 @@ class JobOffer
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive): static
+    public function setIsActive(?bool $isActive = null): static
     {
-        $this->isActive = $isActive;
+        $this->isActive = $isActive ?? false;
 
         return $this;
     }
@@ -193,9 +193,9 @@ class JobOffer
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
 
         return $this;
     }

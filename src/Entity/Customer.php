@@ -39,6 +39,9 @@ class Customer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: JobOffer::class, orphanRemoval: true)]
     private Collection $jobOffers;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     public function __construct()
     {
         $this->jobOffers = new ArrayCollection();
@@ -159,6 +162,18 @@ class Customer
                 $jobOffer->setCustomer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
+    {
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
 
         return $this;
     }
