@@ -22,7 +22,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -30,7 +30,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
-
+            $user->setIsActive();
             $entityManager->persist($user);
             $entityManager->flush();
             $security->login($user);

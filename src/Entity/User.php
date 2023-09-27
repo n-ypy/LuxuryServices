@@ -128,9 +128,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isActive;
     }
 
-    public function setIsActive(bool $isActive): static
+    public function setIsActive(?bool $isActive = null): static
     {
-        $this->isActive = $isActive;
+        $this->isActive = $isActive ?? true;
 
         return $this;
     }
