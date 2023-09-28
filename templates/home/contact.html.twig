@@ -32,90 +32,107 @@
 			</section>
 
 			<!-- Page Content-->
-			<form method="POST" action="#!" accept-charset="UTF-8" id="formContact" class="light-gray-bg">
-				<input name="_token" type="hidden" value="">
-				<input name="job_id" type="hidden" value="">
-				<section class="section-padding">
-					<div class="container">
-						<div class="text-center mb-80">
-							<h2 class="section-title text-uppercase">Drop us a line</h2>
-							<p class="section-sub text-center">Whether your needs, desires or wishes are urgent or a little less, they will all be taken care of with the some efficiency by us.</p>
+			{# <form method="POST" action="#!" accept-charset="UTF-8" id="formContact" class="light-gray-bg"> #}
+			{{ form_start(form, {'attr':  {'id': 'formContact-form', 'class': 'light-gray-bg'}}) }}
+			<input name="_token" type="hidden" value="">
+			<input name="job_id" type="hidden" value="">
+			<section class="section-padding">
+				<div class="container">
+					<div class="text-center mb-80">
+						<h2 class="section-title text-uppercase">Drop us a line</h2>
+						<p class="section-sub text-center">Whether your needs, desires or wishes are urgent or a little less, they will all be taken care of with the some efficiency by us.</p>
+					</div>
+
+					<div class="row">
+						<div id="contactForm" class="col-xs-12 col-sm-12 col-md-8">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="input-field">
+										{{ form_widget(form.firstName, {'required': 'true', 'label': 'First name'}) }}
+										{{ form_label(form.firstName) }}
+										{{ form_errors(form.firstName) }}
+										{# <input required="required" name="firstname" type="text">
+										<label for="firstname">First name</label> #}
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-field">
+										{{ form_widget(form.lastName, {'required': 'true', 'label': 'Last name'}) }}
+										{{ form_label(form.lastName) }}
+										{{ form_errors(form.lastName) }}
+										{# <input required="required" name="lastname" type="text">
+										<label for="lastname">Last name</label> #}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="input-field">
+										{{ form_widget(form.email, {'required': 'true', 'label': 'Email'}) }}
+										{{ form_label(form.email) }}
+										{{ form_errors(form.email) }}
+										{# <input required="required" name="email" type="email">
+										<label for="email">Email</label> #}
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="input-field">
+										{{ form_widget(form.phoneNumber, {'required': 'true', 'label': 'Phone Number'}) }}
+										{{ form_label(form.phoneNumber) }}
+										{{ form_errors(form.phoneNumber) }}
+										{# <input required="required" name="phone" type="tel">
+										<label for="phone">Phone Number</label> #}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="input-field">
+										{{ form_widget(form.content, {'required': 'true', 'label': 'Message', 'attr': {'class': 'materialize-textarea', 'cols': '50', 'rows': '10'}}) }}
+										{{ form_label(form.content) }}
+										{{ form_errors(form.content) }}
+										{# <textarea class="materialize-textarea" required="required" name="message" cols="50" rows="10"></textarea>
+										<label for="message">Message</label> #}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-md-6 col-md-offset-3">
+									<button type="submit" name="submit" class="btn btn-block gradient primary waves-effect waves-light submit-button">
+										Send Message
+									</button>
+								</div>
+							</div>
 						</div>
 
-						<div class="row">
-							<div id="contactForm" class="col-xs-12 col-sm-12 col-md-8">
-								<div class="row">
-									<div class="col-md-6">
-										<div class="input-field">
-											<input required="required" name="firstname" type="text">
-											<label for="firstname">First name</label>
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="input-field">
-											<input required="required" name="lastname" type="text">
-											<label for="lastname">Last name</label>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="input-field">
-											<input required="required" name="email" type="email">
-											<label for="email">Email</label>
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="input-field">
-											<input required="required" name="phone" type="tel">
-											<label for="phone">Phone Number</label>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="input-field">
-											<textarea class="materialize-textarea" required="required" name="message" cols="50" rows="10"></textarea>
-											<label for="message">Message</label>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-xs-12 col-md-6 col-md-offset-3">
-										<button type="submit" name="submit" class="btn btn-block gradient primary waves-effect waves-light submit-button">
-											Send Message
-										</button>
-									</div>
-								</div>
-							</div>
+						<div class="col-xs-12 col-sm-12 col-md-4 contact-info mt-40">
 
-							<div class="col-xs-12 col-sm-12 col-md-4 contact-info mt-40">
-
-								<address>
-									<i class="material-icons brand-color">&#xE55F;</i>
-									<div class="address">
-										<p>Luxury Services is based in Roanne, on Loire department</p>
-									</div>
-									<i class="material-icons brand-color">&#xE61C;</i>
-									<div class="phone">
-										<p>+33 (0) 6 16 83 67 76</p>
-									</div>
-									<i class="material-icons brand-color">&#xE916;</i>
-									<div class="phone">
-										<p>9 - 17h with 24/7 speaker</p>
-									</div>
-									<i class="material-icons brand-color">&#xE0E1;</i>
-									<div class="mail">
-										<p>
-											<a href="mailto:ebusy9@gmail.com">ebusy9@gmail.com</a>
-										</p>
-									</div>
-								</address>
-							</div>
+							<address>
+								<i class="material-icons brand-color">&#xE55F;</i>
+								<div class="address">
+									<p>Luxury Services is based in Roanne, on Loire department</p>
+								</div>
+								<i class="material-icons brand-color">&#xE61C;</i>
+								<div class="phone">
+									<p>+33 (0) 6 16 83 67 76</p>
+								</div>
+								<i class="material-icons brand-color">&#xE916;</i>
+								<div class="phone">
+									<p>9 - 17h with 24/7 speaker</p>
+								</div>
+								<i class="material-icons brand-color">&#xE0E1;</i>
+								<div class="mail">
+									<p>
+										<a href="mailto:ebusy9@gmail.com">ebusy9@gmail.com</a>
+									</p>
+								</div>
+							</address>
 						</div>
 					</div>
-				</section>
-			</form>
+				</div>
+			</section>
+			{{ form_end(form) }}
+			{# </form> #}
 			<div id="myMap" class="height-350"></div>
 
 		</div>
@@ -125,5 +142,5 @@
 
 {% block bottomjavascript %}
 {{ parent() }}
-<script src= {{ asset('assets/js/maps.js') }}> 
-{% endblock %}
+<script src={{ asset('assets/js/maps.js') }}>
+	{% endblock %}
