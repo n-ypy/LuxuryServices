@@ -59,20 +59,20 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
         ->setFaviconPath('assets/img/ico.png')
-        ->setTitle('Luxury Services');
+        ->setTitle('<img src="assets/img/ico.png"> Luxury Services');
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Notes', 'fa-solid fa-note-sticky', AdminNotes::class);
         yield MenuItem::linkToCrud('Application', 'fa-solid fa-clipboard', Application::class);
         yield MenuItem::linkToCrud('Candidate', 'fa-solid fa-poo', Candidate::class);
-        yield MenuItem::linkToCrud('Contact', 'fa-solid fa-envelope', Contact::class);
+        yield MenuItem::linkToCrud('Messages', 'fa-solid fa-envelope', Contact::class);
         yield MenuItem::linkToCrud('Customer', 'fa-solid fa-user-tie', Customer::class);
         yield MenuItem::linkToCrud('Job Offer', 'fas fa-briefcase', JobOffer::class);
-        yield MenuItem::linkToCrud('Media', 'fas fa-floppy-disk', Media::class);
         yield MenuItem::linkToCrud('User', 'fa-solid fa-user', User::class);
+        yield MenuItem::linkToCrud('Media', 'fas fa-floppy-disk', Media::class);
+        yield MenuItem::linkToCrud('Notes', 'fa-solid fa-note-sticky', AdminNotes::class);
 
         yield MenuItem::subMenu('Select Menu Items', 'fa-solid fa-tags')->setSubItems([
             MenuItem::linkToCrud('Application Status', 'fa-solid fa-tag', ApplicationStatus::class),

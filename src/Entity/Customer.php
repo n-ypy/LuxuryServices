@@ -177,4 +177,14 @@ class Customer
 
         return $this;
     }
+
+    public function setCreationDateOnNotes(): void
+    {
+        $this->notes->setCreatedAt();
+    }
+
+    public function __toString(): string
+    {
+        return $this->companyName;
+    }
 }
