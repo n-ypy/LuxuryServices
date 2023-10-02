@@ -20,7 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class JobOfferCrudController extends AbstractCrudController
@@ -98,9 +98,15 @@ class JobOfferCrudController extends AbstractCrudController
             AssociationField::new('customer'),
             BooleanField::new('isActive', 'Active'),
             TextField::new('jobTitle'),
+            TextField::new('position'),
+            TextEditorField::new('description')->setTrixEditorConfig([
+                'blockAttributes' => [
+                    'default' => ['tagName' => 'p'],
+                    'heading1' => ['tagName' => 'h2'],
+                ]]),
             AssociationField::new('jobCategory'),
             AssociationField::new('jobType'),
-            TextareaField::new('location'),
+            TextField::new('location'),
             IntegerField::new('salary'),
             DateField::new('closingDate'),
             CollectionField::new('applications')->hideOnForm(),

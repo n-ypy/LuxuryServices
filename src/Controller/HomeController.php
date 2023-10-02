@@ -2,11 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Application;
 use App\Entity\Contact;
+use App\Entity\JobOffer;
+use App\Form\ApplicationType;
 use App\Form\ContactType;
+use App\Repository\ApplicationStatusRepository;
 use App\Repository\ContactStatusRepository;
+use App\Repository\JobOfferRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,10 +21,27 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(JobOfferRepository $jobOfferRepository, Request $request, EntityManagerInterface $entityManager, ApplicationStatusRepository $applicationStatusRepository,  Security $security): Response
     {
+        $application = new Application();
+        $form = $this->createForm(ApplicationType::class, $application);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $application->setCreatedAt(new DateTimeImmutable());
+            $status = $applicationStatusRepository->findOneBy(['statusValue' => "Pending"]);
+            $application->setStatus($status);
+            $entityManager->persist($application);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_application_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $allJobs = $jobOfferRepository->findBy(['isActive' => true], limit: 10, orderBy: ["createdAt" => "DESC"]);
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+            'allJobs' => $allJobs,
+            'form' => $form,
+            'user' => $security->getUser(),
         ]);
     }
 
@@ -52,18 +76,36 @@ class HomeController extends AbstractController
     }
 
     #[Route('/jobs', name: 'app_jobs')]
-    public function jobs(): Response
+    public function jobs(JobOfferRepository $jobOfferRepository): Response
     {
+        $allJobs = $jobOfferRepository->findBy(['isActive' => true], orderBy: ["closingDate" => "DESC"]);
         return $this->render('home/jobs.html.twig', [
-            'controller_name' => 'HomeController',
+            'allJobs' => $allJobs,
         ]);
     }
 
-    #[Route('/jobs/show', name: 'app_jobs_show')]
-    public function jobsShow(): Response
+    #[Route('/jobs/show/{id}', name: 'app_jobs_show', methods: ['GET'])]
+    public function jobsShow(JobOffer $jobOffer, JobOfferRepository $jobOfferRepository): Response
     {
+        $allJobs = $jobOfferRepository->findBy(['isActive' => true], orderBy: ["createdAt" => "DESC"]);
+        
+        $key = null;
+        foreach ($allJobs as $needle => $job) {
+            if($job->getId() === $jobOffer->getId()) $key = $needle;
+        }
+
+        if($key !== null){
+            $prevJob = array_key_exists($key -1, $allJobs) ? $allJobs[$key -1] : $allJobs[array_key_last($allJobs)];
+            $nextJob = array_key_exists($key +1, $allJobs) ? $allJobs[$key +1] : $allJobs[array_key_first($allJobs)];
+        } else {
+            $prevJob = $jobOffer;
+            $nextJob = $jobOffer;
+        }
+
         return $this->render('home/jobs_show.html.twig', [
-            'controller_name' => 'HomeController',
+            'jobOffer' => $jobOffer,
+            'prevJob' => $prevJob,
+            'nextJob' => $nextJob,
         ]);
     }
 
