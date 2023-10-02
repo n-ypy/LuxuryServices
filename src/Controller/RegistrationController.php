@@ -32,13 +32,17 @@ class RegistrationController extends AbstractController
             );
 
             $user->setIsActive();
+
             $entityManager->persist($user);
             $entityManager->flush();
+
             $candidate = (new Candidate)
             ->setUser($user)
             ->setCreatedAt();
+            
             $entityManager->persist($candidate);
             $entityManager->flush();
+
             $security->login($user);
 
             return $this->redirectToRoute('app_profile');

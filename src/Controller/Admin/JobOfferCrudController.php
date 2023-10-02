@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AdminNotes\AdminNotesCrudController;
+use App\Entity\AdminNotes;
 use App\Entity\JobOffer;
+use App\Repository\AdminNotesRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -30,9 +32,26 @@ class JobOfferCrudController extends AbstractCrudController
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $entityInstance->setUpdatedAt(new DateTimeImmutable());
-        $entityInstance->setCreationDateOnNotes();
+
+        if ($entityInstance->getNotes() !== null) {
+            if ($entityInstance->getNotes()->getContent() === "") {
+                if ($entityInstance->getNotes()->getId() !== null) {
+                    $notes = $entityInstance->getNotes();
+                    $deleteNotes = true;
+                }
+                $entityInstance->setNotes(null);
+            }
+        }
+
+        $entityInstance
+            ->setUpdatedAt(new DateTimeImmutable())
+            ->setCreationDateOnNotes();
+
         parent::updateEntity($entityManager, $entityInstance);
+
+        if (isset($deleteNotes)) {
+            $this->deleteEntity($entityManager, $notes);
+        }
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -46,8 +65,15 @@ class JobOfferCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $entityInstance->setReference()
+        if ($entityInstance->getNotes() !== null) {
+            if ($entityInstance->getNotes()->getContent() === "") {
+                $entityInstance->setNotes(null);
+            }
+        }
+
+        $entityInstance
             ->setCreatedAt()
+            ->setReference()
             ->setCreationDateOnNotes();
         parent::persistEntity($entityManager, $entityInstance);
     }
@@ -78,7 +104,7 @@ class JobOfferCrudController extends AbstractCrudController
             IntegerField::new('salary'),
             DateField::new('closingDate'),
             CollectionField::new('applications')->hideOnForm(),
-            AssociationField::new('notes')->setCrudController(AdminNotesCrudController::class)->renderAsEmbeddedForm(),
+            AssociationField::new('notes')->renderAsEmbeddedForm(AdminNotesCrudController::class)->setRequired(false),
             DateTimeField::new('updatedAt', 'Updated')->hideOnForm(),
             DateTimeField::new('createdAt', 'Created')->hideOnForm(),
         ];

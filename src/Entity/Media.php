@@ -50,7 +50,7 @@ class Media
         return $this->candidatePassportFile;
     }
 
-    public function setCandidate(?Candidate $candidatePassportFile): static
+    public function setCandidatePassportFile(?Candidate $candidatePassportFile): static
     {
         // unset the owning side of the relation if necessary
         if ($candidatePassportFile === null && $this->candidatePassportFile !== null) {
@@ -127,4 +127,6 @@ class Media
     {
         return $this->url;
     }
+
+
 }

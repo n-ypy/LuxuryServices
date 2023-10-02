@@ -44,6 +44,13 @@ class CandidateCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        if($entityInstance->getNotes() !== null)
+        {
+            if($entityInstance->getNotes()->getContent() === "")
+            {
+               $entityInstance->setNotes(null);
+            }
+        }
         $entityInstance
         ->setCreatedAt()
         ->setCreationDateOnNotesAndMedia();
@@ -52,8 +59,24 @@ class CandidateCrudController extends AbstractCrudController
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+
+        if ($entityInstance->getNotes() !== null) {
+            if ($entityInstance->getNotes()->getContent() === "") {
+                if ($entityInstance->getNotes()->getId() !== null) {
+                    $notes = $entityInstance->getNotes();
+                    $deleteNotes = true;
+                }
+                $entityInstance->setNotes(null);
+            }
+        }
+
         $entityInstance->setCreationDateOnNotesAndMedia();
+
         parent::updateEntity($entityManager, $entityInstance);
+
+        if (isset($deleteNotes)) {
+            $this->deleteEntity($entityManager, $notes);
+        }
     }
 
     public function configureFields(string $pageName): iterable
@@ -79,7 +102,7 @@ class CandidateCrudController extends AbstractCrudController
             AssociationField::new('experience')->hideOnIndex(),
             TextareaField::new('shortDescription', 'Description')->hideOnIndex(),
             CollectionField::new('applications')->hideOnForm()->hideOnIndex(),
-            AssociationField::new('notes')->renderAsEmbeddedForm(AdminNotesCrudController::class),
+            AssociationField::new('notes')->renderAsEmbeddedForm(AdminNotesCrudController::class)->setRequired(false),
             DateTimeField::new('createdAt')->hideOnForm(),
         ];
     }

@@ -7,11 +7,13 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 
 class AdminNotesCrudController extends AbstractCrudController
 {
@@ -46,10 +48,10 @@ class AdminNotesCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextareaField::new('content', 'Note'),
             AssociationField::new('customer'),
             AssociationField::new('jobOffer'),
             AssociationField::new('candidate'),
+            TextareaField::new('content'),
             DateTimeField::new('updatedAt', 'Updated')->hideOnForm(),
             DateTimeField::new('createdAt', 'Created')->hideOnForm(),
         ];

@@ -23,13 +23,13 @@ class AdminNotes
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToOne(mappedBy: 'notes', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'notes')]
     private ?Customer $customer = null;
 
-    #[ORM\OneToOne(mappedBy: 'notes', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'notes')]
     private ?JobOffer $jobOffer = null;
 
-    #[ORM\OneToOne(mappedBy: 'notes', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'notes')]
     private ?Candidate $candidate = null;
 
     public function getId(): ?int

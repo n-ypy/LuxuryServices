@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AdminNotes\AdminNotesCrudController;
 use App\Entity\Customer;
-use App\Repository\AdminNotesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -35,39 +34,39 @@ class CustomerCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if($entityInstance->getNotes() !== null)
-        {
-
-            if($entityInstance->getNotes()->getContent() === "")
-            {
-               $entityInstance->setNotes(null);
+        if ($entityInstance->getNotes() !== null) {
+            if ($entityInstance->getNotes()->getContent() === "") {
+                $entityInstance->setNotes(null);
             }
         }
 
         $entityInstance
-        ->setCreatedAt()
-        ->setCreationDateOnNotes()
-        ;
+            ->setCreatedAt()
+            ->setCreationDateOnNotes();
         parent::persistEntity($entityManager, $entityInstance);
     }
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if($entityInstance->getNotes() !== null)
-        {
-            if($entityInstance->getNotes()->getContent() === "")
-            {
-                if($entityInstance->getNotes()->getId() !== null)
-                {
-                    $this->deleteEntity($entityManager, $entityInstance->getNotes());
+
+        if ($entityInstance->getNotes() !== null) {
+            if ($entityInstance->getNotes()->getContent() === "") {
+                if ($entityInstance->getNotes()->getId() !== null) {
+                    $notes = $entityInstance->getNotes();
+                    $deleteNotes = true;
                 }
-               $entityInstance->setNotes(null);
+                $entityInstance->setNotes(null);
             }
         }
 
         $entityInstance
-        ->setCreationDateOnNotes();
+            ->setCreationDateOnNotes();
+
         parent::updateEntity($entityManager, $entityInstance);
+
+        if (isset($deleteNotes)) {
+            $this->deleteEntity($entityManager, $notes);
+        }
     }
 
     public function configureFields(string $pageName): iterable
@@ -81,9 +80,8 @@ class CustomerCrudController extends AbstractCrudController
             TelephoneField::new('contactPhoneNumber', 'Phone'),
             EmailField::new('contactEmail', 'Email'),
             AssociationField::new('notes')->renderAsEmbeddedForm(AdminNotesCrudController::class)->setRequired(false),
-            CollectionField::new('jobOffers')->hideWhenCreating()->setDisabled(),
+            CollectionField::new('jobOffers')->hideOnForm(),
             DateTimeField::new('createdAt', 'Added')->hideOnForm(),
         ];
     }
-
 }
