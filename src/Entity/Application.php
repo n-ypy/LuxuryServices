@@ -79,7 +79,7 @@ class Application
 
     public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
     {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt ??= $createdAt ?? new \DateTimeImmutable();
 
         return $this;
     }
@@ -94,5 +94,10 @@ class Application
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->candidate->getUser() . " / " . $this->jobOffer->getJobTitle();
     }
 }

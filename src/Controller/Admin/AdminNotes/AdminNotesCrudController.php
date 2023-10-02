@@ -18,7 +18,7 @@ class AdminNotesCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideWhenCreating()->hideWhenUpdating(),
-            TextareaField::new('content', 'Note'),
+            TextareaField::new('content', 'Notes')->setRequired(false)->setEmptyData(''),
         ];
     }
 

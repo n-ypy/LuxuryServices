@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+use function PHPUnit\Framework\isNull;
+
 #[ORM\Entity(repositoryClass: JobOfferRepository::class)]
 class JobOffer
 {
@@ -73,9 +75,10 @@ class JobOffer
         return $this->reference;
     }
 
-    public function setReference(string $reference): static
+    public function setReference(?string $reference = null): static
     {
-        $this->reference = $reference;
+        $generetedRef = (string) "#" . substr(strtoupper($this->jobCategory), 0, 3) . substr(date_timestamp_get($this->createdAt), -6);
+        $this->reference = $reference ?? $generetedRef;
 
         return $this;
     }
@@ -195,7 +198,7 @@ class JobOffer
 
     public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
     {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt ??= $createdAt ?? new \DateTimeImmutable();
 
         return $this;
     }
@@ -240,5 +243,15 @@ class JobOffer
         }
 
         return $this;
+    }
+
+    public function setCreationDateOnNotes(): void
+    {
+        if ($this->notes !== null) $this->notes->setCreatedAt();
+    }
+
+    public function __toString()
+    {
+        return $this->jobTitle;
     }
 }

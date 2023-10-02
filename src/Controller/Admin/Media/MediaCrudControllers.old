@@ -1,0 +1,33 @@
+<?php
+
+// namespace App\Controller\Admin\Media;
+
+// use App\Entity\Media;
+// use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+// use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+// use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+// use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+// use EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType;
+// use Symfony\Component\DomCrawler\Field\FileFormField;
+
+// class MediaCrudController extends AbstractCrudController
+// {
+//     public static function getEntityFqcn(): string
+//     {
+//         return Media::class;
+//     }
+
+
+//     public function configureFields(string $pageName): iterable
+//     {
+//         return [
+//             ImageField::new('url', 'Profile Picture')
+//             ->setBasePath('assets/uploads/')
+//             ->setUploadDir('public/assets/uploads/')
+//             ->setSortable(false)
+//             ->setRequired(false)
+//             // ->setFormType(FileUploadType::class)
+//         ];
+//     }
+
+// }

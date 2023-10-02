@@ -173,14 +173,14 @@ class Customer
 
     public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
     {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt ??= $createdAt ?? new \DateTimeImmutable();
 
         return $this;
     }
 
     public function setCreationDateOnNotes(): void
     {
-        $this->notes->setCreatedAt();
+        if ($this->notes !== null) $this->notes->setCreatedAt();
     }
 
     public function __toString(): string

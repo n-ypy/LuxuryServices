@@ -68,7 +68,7 @@ class AdminNotes
 
     public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
     {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt ??= $createdAt ?? new \DateTimeImmutable();
 
         return $this;
     }

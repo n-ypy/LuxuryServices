@@ -41,13 +41,13 @@ class Candidate
     #[ORM\Column(nullable: true)]
     private ?bool $isPassportValid = null;
 
-    #[ORM\OneToOne(inversedBy: 'candidate', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'candidatePassportFile', cascade: ['persist', 'remove'])]
     private ?Media $passportFile = null;
 
-    #[ORM\OneToOne(inversedBy: 'candidate', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'candidateCurriculumVitae', cascade: ['persist', 'remove'])]
     private ?Media $curriculumVitae = null;
 
-    #[ORM\OneToOne(inversedBy: 'candidate', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'candidateProfilePicture', cascade: ['persist', 'remove'])]
     private ?Media $profilePicture = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -355,8 +355,21 @@ class Candidate
 
     public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
     {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt ??= $createdAt ?? new \DateTimeImmutable();
 
         return $this;
+    }
+
+    public function setCreationDateOnNotesAndMedia(): void
+    {
+        if ($this->notes !== null) $this->notes->setCreatedAt();
+        if ($this->passportFile !== null) $this->passportFile->setCreatedAt();
+        if ($this->curriculumVitae !== null) $this->curriculumVitae->setCreatedAt();
+        if ($this->profilePicture !== null) $this->profilePicture->setCreatedAt();
+    }
+
+    public function __toString(): string
+    {
+        return $this->user;
     }
 }

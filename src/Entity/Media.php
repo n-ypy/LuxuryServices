@@ -17,7 +17,13 @@ class Media
     private ?string $url = null;
 
     #[ORM\OneToOne(mappedBy: 'passportFile', cascade: ['persist', 'remove'])]
-    private ?Candidate $candidate = null;
+    private ?Candidate $candidatePassportFile = null;
+
+    #[ORM\OneToOne(mappedBy: 'curriculumVitae', cascade: ['persist', 'remove'])]
+    private ?Candidate $candidateCurriculumVitae = null;
+
+    #[ORM\OneToOne(mappedBy: 'profilePicture', cascade: ['persist', 'remove'])]
+    private ?Candidate $candidateProfilePicture = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -39,28 +45,72 @@ class Media
         return $this;
     }
 
-    public function getCandidate(): ?Candidate
+    public function getCandidatePassportFile(): ?Candidate
     {
-        return $this->candidate;
+        return $this->candidatePassportFile;
     }
 
-    public function setCandidate(?Candidate $candidate): static
+    public function setCandidate(?Candidate $candidatePassportFile): static
     {
         // unset the owning side of the relation if necessary
-        if ($candidate === null && $this->candidate !== null) {
-            $this->candidate->setPassportFile(null);
+        if ($candidatePassportFile === null && $this->candidatePassportFile !== null) {
+            $this->candidatePassportFile->setPassportFile(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($candidate !== null && $candidate->getPassportFile() !== $this) {
-            $candidate->setPassportFile($this);
+        if ($candidatePassportFile !== null && $candidatePassportFile->getPassportFile() !== $this) {
+            $candidatePassportFile->setPassportFile($this);
         }
 
-        $this->candidate = $candidate;
+        $this->candidatePassportFile = $candidatePassportFile;
 
         return $this;
     }
 
+    public function getCandidateCurriculumVitae(): ?Candidate
+    {
+        return $this->candidateCurriculumVitae;
+    }
+
+    public function setCandidateCurriculumVitae(?Candidate $candidateCurriculumVitae): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($candidateCurriculumVitae === null && $this->candidateCurriculumVitae !== null) {
+            $this->candidateCurriculumVitae->setPassportFile(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($candidateCurriculumVitae !== null && $candidateCurriculumVitae->getPassportFile() !== $this) {
+            $candidateCurriculumVitae->setPassportFile($this);
+        }
+
+        $this->candidateCurriculumVitae = $candidateCurriculumVitae;
+
+        return $this;
+    }
+
+    public function getCandidateProfilePicture(): ?Candidate
+    {
+        return $this->candidateProfilePicture;
+    }
+
+    public function setCandidateProfilePicture(?Candidate $candidateProfilePicture): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($candidateProfilePicture === null && $this->candidateProfilePicture !== null) {
+            $this->candidateProfilePicture->setPassportFile(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($candidateProfilePicture !== null && $candidateProfilePicture->getPassportFile() !== $this) {
+            $candidateProfilePicture->setPassportFile($this);
+        }
+
+        $this->candidateProfilePicture = $candidateProfilePicture;
+
+        return $this;
+    }
+    
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -68,8 +118,13 @@ class Media
 
     public function setCreatedAt(?\DateTimeImmutable $createdAt = null): static
     {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt ??= $createdAt ?? new \DateTimeImmutable();
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->url;
     }
 }
