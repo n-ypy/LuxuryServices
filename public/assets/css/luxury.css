@@ -161,3 +161,11 @@ body .log-section form .links a {
 #mapcontent h4 {
     margin-top: 0
 }
+
+
+.card-action .btn-success {
+    color: #236944 !important;
+    border-color: #236944 !important;
+    background-color: #a9e2c4 !important;
+    opacity: 1 !important
+}

@@ -49,7 +49,7 @@
 								<p class="ref grey-text no-margin">{{jobOffer.reference}}</p>
 								<h2>{{jobOffer.jobTitle}}</h2>
 								{{ jobOffer.description|raw}}
-                                
+
 							</div>
 							<div class="col-xs-12 col-md-4 quick-overview">
 								<ul class="portfolio-meta">
@@ -84,40 +84,56 @@
 										</span>
 										{{jobOffer.closingDate|date("Y-m-d", "Europe/Paris") }}</li>
 								</ul>
-								<a class="btn btn-block gradient primary mt-30 waves-effect waves-light" href="#!">Apply for this job</a>
-								<div class="btn btn-block btn-success mt-30 waves-effect waves-light disabled">You have applied for this job</div>
+								{% if app.user %}
+									{% set userAlreadyApplied = false %}
+									{% for application in app.user.candidate.applications %}
+										{% if application.jobOffer.id is same as( jobOffer.id ) %}
+											{% set userAlreadyApplied = true %}
+										{% endif %}
+									{% endfor %}
+
+									{% if userAlreadyApplied %}
+										<div class="btn btn-block btn-success mt-30 waves-effect waves-light disabled">You have applied for this job</div>
+									{% else %}
+										{{ form_start(form) }}
+										{{form_widget(form.jobOffer, { value: jobOffer.id, 'attr':{'style': 'display: none !important;'}}) }}
+										<button type="submit" class="btn btn-block gradient primary mt-30 waves-effect waves-light">Apply for this job</button>
+										{{ form_end(form) }}
+									{% endif %}
+								{% else %}
+									<a class="btn btn-block gradient primary mt-30 waves-effect waves-light" href="{{ path('app_login') }}">Apply for this job</a>
+								{% endif %}
 							</div>
 						</div>
+
+						<nav class="single-post-navigation no-margin" role="navigation">
+							<div class="row">
+
+								<div class="col-xs-6 col-sm-6 col-md-4">
+									<div class="previous-post-link">
+										<a class="btn border primary waves-effect waves-dark" href="{{path('app_jobs_show', {'id': prevJob.id})}}">
+											<i class="fa fa-long-arrow-left"></i>Previous
+										</a>
+									</div>
+								</div>
+								<div class="hidden-xs hidden-sm col-md-4"></div>
+
+
+								<div class="col-xs-6 col-sm-6 col-md-4">
+									<div class="next-post-link">
+										<a class="btn border primary waves-effect waves-dark" href="{{path('app_jobs_show', {'id': nextJob.id})}}">
+											Next
+											<i class="fa fa-long-arrow-right"></i>
+										</a>
+									</div>
+								</div>
+
+							</div>
+						</nav>
 					</div>
+				</section>
 
-					<nav class="single-post-navigation no-margin" role="navigation">
-						<div class="row">
-
-							<div class="col-xs-6 col-sm-6 col-md-4">
-								<div class="previous-post-link">
-									<a class="btn border primary waves-effect waves-dark" href="{{path('app_jobs_show', {'id': prevJob.id})}}">
-										<i class="fa fa-long-arrow-left"></i>Previous
-									</a>
-								</div>
-							</div>
-							<div class="hidden-xs hidden-sm col-md-4"></div>
-
-
-							<div class="col-xs-6 col-sm-6 col-md-4">
-								<div class="next-post-link">
-									<a class="btn border primary waves-effect waves-dark" href="{{path('app_jobs_show', {'id': nextJob.id})}}">
-										Next
-										<i class="fa fa-long-arrow-right"></i>
-									</a>
-								</div>
-							</div>
-
-						</div>
-					</nav>
-				</div>
-			</section>
+			</div>
 
 		</div>
-
-	</div>
-{% endblock %}
+	{% endblock %}

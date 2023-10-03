@@ -183,7 +183,7 @@
 							<li class=" waves-effect waves-light" data-group="management">Management & HR</li>
 						</ul>
 						<div class="portfolio portfolio-with-title col-2 gutter mt-30">
-												{{ form_start(form) }}
+
 							{% for job in allJobs %}
 								<div class="portfolio-item" data-groups='["all", "{{job.jobCategory.categoryValue|split(' ')[0]|lower}}"]'>
 									<div class="portfolio-wrapper">
@@ -196,8 +196,7 @@
 												<div class="metas mb-20">
 													<div class="meta">
 														<i class="material-icons">&#xE53E;</i>
-														{{(job.salary / 1000)|round()}}
-														k&euro;
+														{{(job.salary / 1000)|round()}}k&euro;
 													</div>
 													<div class="meta">
 														<i class="material-icons">&#xE916;</i>
@@ -208,23 +207,47 @@
 														{{job.location}}
 													</div>
 												</div>
-												<p class="truncate-text">{{job.description}}</p>
-											</div>
-											<div class="card-action">
-												<a class="btn btn-md primary border waves-effect waves-dark" href="{{ path('app_jobs_show', {'id': job.id}) }}">Details</a>
+												<p class="truncate-text">{{job.description|striptags}}</p>
 
-												{% set candidateField = form_widget(form.candidate, { 'attr': { value: user.candidate } }) %}
-												{% set jobOfferField = form_widget(form.jobOffer, { 'attr': { value: job } }) %}
-												{{ candidateField }}
-												{{ jobOfferField }}
-												<a class="btn btn-md primary waves-effect waves-light" href="#!">Apply</a>
 											</div>
+											{% if app.user %}
+											{% set userAlreadyApplied = false %}
+												{% for application in app.user.candidate.applications %}
+
+													{% if application.jobOffer.id is same as( job.id ) %}
+														{% set userAlreadyApplied = true %}
+													{% endif %}
+												{% endfor %}
+												
+
+												{% if userAlreadyApplied %}
+												<div class="card-action">
+													<a class="btn btn-md primary border waves-effect waves-dark" href="{{ path('app_jobs_show', {'id': job.id}) }}">Details</a>
+													<a class="btn btn-md btn-success waves-effect waves-light disabled">Applied</a>
+												</div>
+												{% else %}
+												{{ form_start(forms[job.id]) }}
+														<div class="card-action">
+															<a class="btn btn-md primary border waves-effect waves-dark" href="{{ path('app_jobs_show', {'id': job.id}) }}">Details</a>
+															{{form_widget(forms[job.id].jobOffer, { value: job.id, 'attr':{'style': 'display: none !important;'}}) }}
+															<button type="submit" class="btn btn-md primary waves-effect waves-light">Apply</button>
+														</div>
+												{{ form_end(forms[job.id]) }}
+												{% endif %}
+												
+																										
+											{% else %}
+
+												<div class="card-action">
+													<a class="btn btn-md primary border waves-effect waves-dark" href="{{ path('app_jobs_show', {'id': job.id}) }}">Details</a>
+													<a class="btn btn-md primary waves-effect waves-light" href="{{ path('app_login')}}">Apply</a>
+												</div>
+
+											{% endif %}
 										</div>
 									</div>
 								</div>
 							{% endfor %}
-												{{ form_end(form) }}
-
 
 							<div class="no-item"></div>
 

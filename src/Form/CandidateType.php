@@ -4,6 +4,10 @@ namespace App\Form;
 
 use App\Entity\Candidate;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,24 +18,34 @@ class CandidateType extends AbstractType
         $builder
             ->add('firstName')
             ->add('lastName')
-            ->add('adress')
-            ->add('country')
+            ->add('adress', TextType::class, [
+                "label" => false,
+                "required" => false,
+            ])
+            ->add('country', CountryType::class)
             ->add('nationality')
-            ->add('isPassportValid')
-            ->add('currentLocation')
-            ->add('dateOfBirth')
-            ->add('placeOfBirth')
-            ->add('isAvailable')
-            ->add('shortDescription')
-            ->add('createdAt')
-            ->add('user')
+            ->add('currentLocation', TextType::class, [
+                "label" => false,
+                "required" => false,
+            ])
+            ->add('dateOfBirth', DateType::class, [
+                'html5' => true,  
+                'widget' => 'single_text',
+                "required" => false,])
+            ->add('placeOfBirth', TextType::class, [
+                "label" => false,
+                "required" => false,
+            ])
+            ->add('shortDescription', TextareaType::class, [
+                "label" => false,
+                "required" => false,
+            ])
             ->add('gender')
-            ->add('passportFile')
-            ->add('curriculumVitae')
-            ->add('profilePicture')
+            ->add('passportFile', MediaType::class)
+            ->add('curriculumVitae', MediaType::class)
+            ->add('profilePicture', MediaType::class)
             ->add('jobCategory')
             ->add('experience')
-            ->add('notes')
         ;
     }
 

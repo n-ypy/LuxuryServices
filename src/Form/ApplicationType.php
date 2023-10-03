@@ -13,8 +13,7 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('candidate', HiddenType::class)
-            ->add('jobOffer', HiddenType::class)
+            ->add('jobOffer')
         ;
     }
 

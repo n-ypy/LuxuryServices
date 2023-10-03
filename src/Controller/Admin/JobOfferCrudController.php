@@ -102,7 +102,7 @@ class JobOfferCrudController extends AbstractCrudController
             TextEditorField::new('description')->setTrixEditorConfig([
                 'blockAttributes' => [
                     'default' => ['tagName' => 'p'],
-                    'heading1' => ['tagName' => 'h2'],
+                    'heading1' => ['tagName' => 'h4'],
                 ]]),
             AssociationField::new('jobCategory'),
             AssociationField::new('jobType'),
