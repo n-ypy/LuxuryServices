@@ -8,6 +8,7 @@ use App\Entity\JobOffer;
 use App\Form\ApplicationType;
 use App\Form\CandidateType;
 use App\Form\ContactType;
+use App\Form\DeleteAccountType;
 use App\Repository\ApplicationStatusRepository;
 use App\Repository\ContactStatusRepository;
 use App\Repository\JobOfferRepository;
@@ -46,11 +47,23 @@ class HomeController extends AbstractController
                 $formsViews[$job->getId()] = $forms[$job->getId()]->createView();
             }
         }
+
+        $profileComplete = null;
+        if($security->getUser() !== null){
+            $profileComplete = $security->getUser()
+                ->getCandidate()
+                ->isProfileComplete();
+        }
+        
         return $this->render('home/index.html.twig', [
             'allJobs' => $allJobs,
             'forms' => $formsViews,
+            'profileComplete' => $profileComplete
         ]);
     }
+
+
+
 
     #[Route('/contact', name: 'app_contact', methods: ['GET', 'POST'])]
     public function contact(Request $request, EntityManagerInterface $entityManager, ContactStatusRepository $contactStatusRepository): Response
@@ -74,13 +87,17 @@ class HomeController extends AbstractController
         ]);
     }
 
+
+
+
     #[Route('/company', name: 'app_company')]
     public function company(): Response
     {
-        return $this->render('home/company.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('home/company.html.twig');
     }
+
+
+
 
     #[Route('/jobs', name: 'app_jobs')]
     public function jobs(JobOfferRepository $jobOfferRepository, Request $request, EntityManagerInterface $entityManager, ApplicationStatusRepository $applicationStatusRepository,  Security $security): Response
@@ -107,11 +124,23 @@ class HomeController extends AbstractController
                 $formsViews[$job->getId()] = $forms[$job->getId()]->createView();
             }
         }
+
+        $profileComplete = null;
+        if($security->getUser() !== null){
+            $profileComplete = $security->getUser()
+                ->getCandidate()
+                ->isProfileComplete();
+        }
+
         return $this->render('home/jobs.html.twig', [
             'allJobs' => $allJobs,
             'forms' => $formsViews,
+            'profileComplete' => $profileComplete
         ]);
     }
+
+
+
 
     #[Route('/jobs/show/{id}', name: 'app_jobs_show', methods: ['GET', 'POST'])]
     public function jobsShow(JobOffer $jobOffer, JobOfferRepository $jobOfferRepository, Request $request, EntityManagerInterface $entityManager, ApplicationStatusRepository $applicationStatusRepository,  Security $security): Response
@@ -131,7 +160,6 @@ class HomeController extends AbstractController
             $nextJob = $jobOffer;
         }
 
-
         $application = new Application();
         $form = $this->createForm(ApplicationType::class, $application);
         $form->handleRequest($request);
@@ -145,28 +173,55 @@ class HomeController extends AbstractController
             $entityManager->flush();
         }
 
+        $profileComplete = null;
+        if($security->getUser() !== null){
+            $profileComplete = $security->getUser()
+                ->getCandidate()
+                ->isProfileComplete();
+        }
 
         return $this->render('home/jobs_show.html.twig', [
             'jobOffer' => $jobOffer,
             'prevJob' => $prevJob,
             'nextJob' => $nextJob,
             'form' => $form->createView(),
+            'profileComplete' => $profileComplete
         ]);
     }
 
-    #[Route('/profile', name: 'app_profile')]
+
+
+
+    #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
     public function profile(Security $security, Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
+
+        $deleteAccountForm = $this->createForm(DeleteAccountType::class,  $security->getUser());
+        $deleteAccountForm->handleRequest($request);
+
+        if ($deleteAccountForm->isSubmitted() && $deleteAccountForm->isValid()) {
+            $entityManagerInterface->flush();
+            $security->logout(false);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        }
+
         $form = $this->createForm(CandidateType::class, $security->getUser()->getCandidate());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $security->getUser()->getCandidate()->setCreationDateOnNotesAndMedia();
+            $security->getUser()
+                ->getCandidate()
+                ->setCreationDateOnNotesAndMedia();
             $entityManagerInterface->flush();
         }
 
         return $this->render('home/profile.html.twig', [
-            'form' => $form,
+            'form' => $form->createView(),
+            'deleteAccountForm' => $deleteAccountForm->createView(),
+            'percentProfileComplete' => $security
+                ->getUser()
+                ->getCandidate()
+                ->returnsPercentProfileComplete(),
         ]);
     }
 }

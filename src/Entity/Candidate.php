@@ -372,4 +372,35 @@ class Candidate
     {
         return $this->user;
     }
+
+    public function returnsPercentProfileComplete(): int
+    {
+        $score = 0;
+        foreach (get_object_vars($this) as $value) {
+           if ($value !== null) {
+            $score++;
+           }
+        }
+       if($this->id !== null) $score -= 1;
+       if($this->notes !== null) $score -= 1;
+       if($this->user !== null) $score -= 1;
+       if($this->isPassportValid === false) $score -= 1;
+       if($this->isAvailable === false) $score -= 1;
+       if($this->applications !== null) $score -= 1;
+       if($this->createdAt !== null) $score -= 1;
+       if ($score > 0) {
+           $score = (int) round($score * 100 / 17);
+        }
+        return $score;
+    }
+
+    public function isProfileComplete(): bool
+    {
+        if($this->returnsPercentProfileComplete() >= 100)
+        {
+            return true;
+        }
+        return false;
+    }
 }
+

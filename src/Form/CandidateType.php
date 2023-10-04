@@ -22,7 +22,11 @@ class CandidateType extends AbstractType
                 "label" => false,
                 "required" => false,
             ])
-            ->add('country', CountryType::class)
+            ->add('country', CountryType::class, [
+                'alpha3' => true,
+                'placeholder' => '',
+                "required" => false
+            ])
             ->add('nationality')
             ->add('currentLocation', TextType::class, [
                 "label" => false,
@@ -31,7 +35,8 @@ class CandidateType extends AbstractType
             ->add('dateOfBirth', DateType::class, [
                 'html5' => true,  
                 'widget' => 'single_text',
-                "required" => false,])
+                "required" => false,
+                ])
             ->add('placeOfBirth', TextType::class, [
                 "label" => false,
                 "required" => false,
@@ -46,6 +51,8 @@ class CandidateType extends AbstractType
             ->add('profilePicture', MediaType::class)
             ->add('jobCategory')
             ->add('experience')
+            ->add('isAvailable')
+            ->add('isPassportValid')
         ;
     }
 

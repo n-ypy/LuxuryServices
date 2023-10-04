@@ -2935,6 +2935,12 @@ select:focus {
     border-color: rgb(182, 165, 117) !important;
 }
 
-.btn i.material-icons {
-    font-size: 14px !important; 
+#label-passport{
+    font-weight: normal;
+    font-size: 14px;
+}
+
+#label-availability{
+    font-weight: normal;
+    font-size: 14px;
 }
