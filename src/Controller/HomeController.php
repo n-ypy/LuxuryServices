@@ -16,8 +16,10 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
@@ -49,12 +51,12 @@ class HomeController extends AbstractController
         }
 
         $profileComplete = null;
-        if($security->getUser() !== null){
+        if ($security->getUser() !== null) {
             $profileComplete = $security->getUser()
                 ->getCandidate()
                 ->isProfileComplete();
         }
-        
+
         return $this->render('home/index.html.twig', [
             'allJobs' => $allJobs,
             'forms' => $formsViews,
@@ -126,7 +128,7 @@ class HomeController extends AbstractController
         }
 
         $profileComplete = null;
-        if($security->getUser() !== null){
+        if ($security->getUser() !== null) {
             $profileComplete = $security->getUser()
                 ->getCandidate()
                 ->isProfileComplete();
@@ -174,7 +176,7 @@ class HomeController extends AbstractController
         }
 
         $profileComplete = null;
-        if($security->getUser() !== null){
+        if ($security->getUser() !== null) {
             $profileComplete = $security->getUser()
                 ->getCandidate()
                 ->isProfileComplete();
@@ -193,7 +195,7 @@ class HomeController extends AbstractController
 
 
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
-    public function profile(Security $security, Request $request, EntityManagerInterface $entityManagerInterface): Response
+    public function profile(Security $security, Request $request, EntityManagerInterface $entityManagerInterface, UserPasswordHasherInterface $userPasswordHasher): Response
     {
 
         $deleteAccountForm = $this->createForm(DeleteAccountType::class,  $security->getUser());
@@ -205,23 +207,53 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
-        $form = $this->createForm(CandidateType::class, $security->getUser()->getCandidate());
+        $updatePwdErrMsg = null;
+        $candidate = $security->getUser()->getCandidate();
+        $form = $this->createForm(CandidateType::class, $candidate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $security->getUser()
-                ->getCandidate()
-                ->setCreationDateOnNotesAndMedia();
+
+            $userEmail = $form->get("user")->get("email")->getData();
+            $userPasdsword = $form->get("user")->get("password")->getData();
+
+
+            if ($userEmail !== $security->getUser()->getEmail() && $userEmail !== null) //email incorrect and email not empty
+            {
+                $updatePwdErrMsg = 'Invalid email adress.';
+            }
+
+            if ($userEmail === null &&  $userPasdsword !== null) //email empty and password not empty
+            {
+                $updatePwdErrMsg = 'Email adress must not be empty.';
+            }
+
+            if ($userEmail === $security->getUser()->getEmail() && $userPasdsword === null) //email correct and password empty
+            {
+                $updatePwdErrMsg = 'Password must not be empty.';
+            }
+
+            if($updatePwdErrMsg === null && $userEmail !== null && $userPasdsword !== null )
+            {
+                $user = $security->getUser();
+
+                $encodedPassword = $userPasswordHasher->hashPassword(
+                    $user,
+                    $userPasdsword
+                );
+                $candidate->setUser($user->setPassword($encodedPassword));
+            }
+            
+            $candidate->setCreationDateOnNotesAndMedia();
+            $entityManagerInterface->persist($candidate);
             $entityManagerInterface->flush();
         }
 
         return $this->render('home/profile.html.twig', [
             'form' => $form->createView(),
             'deleteAccountForm' => $deleteAccountForm->createView(),
-            'percentProfileComplete' => $security
-                ->getUser()
-                ->getCandidate()
-                ->returnsPercentProfileComplete(),
+            'percentProfileComplete' => $candidate->returnsPercentProfileComplete(InputBag::class),
+            'updatePwdErrMsg' =>  $updatePwdErrMsg
         ]);
     }
 }

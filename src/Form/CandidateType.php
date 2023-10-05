@@ -53,6 +53,7 @@ class CandidateType extends AbstractType
             ->add('experience')
             ->add('isAvailable')
             ->add('isPassportValid')
+            ->add('user' , ChangePasswordOnProfileFormType::class )
         ;
     }
 

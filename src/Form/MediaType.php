@@ -17,7 +17,7 @@ class MediaType extends AbstractType
                 "label" => false,
                 "required" => false,
                 "data_class" => null,
-                // 'mapped' => false,
+                'mapped' => false,
             ])
         ;
     }
