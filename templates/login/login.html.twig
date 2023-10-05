@@ -17,6 +17,17 @@
 			<section class="page-title page-title-bg fixed-bg overlay dark-5 padding-top-160 padding-bottom-80">
 				<div class="container">
 					<div class="row">
+						{% if resetToken != null %}
+							<div class="col-md-12 alert alert-success" role="alert">
+								<p>
+									If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+																		        This link will expire in
+									{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+								</p>
+								<p>If you don't receive an email please check your spam folder or
+									<a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+							</div>
+						{% endif %}
 						<div class="col-md-12">
 							<h2 class="white-text">Login</h2>
 							<span class="white-text">Welcome on board</span>
@@ -55,13 +66,14 @@
 										<span class="help-block">Type your password.</span>
 									</div>
 									<div class="checkbox">
-										<input type="checkbox" id="keep-logged" name="remember" value="1"/>
+										<input type="checkbox" id="keep-logged" name="_remember_me" checked>
 										<label for="keep-logged">Keep me logged in</label>
 									</div>
 									{% if error %}
 										<div id="errormsg">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 									{% endif %}
 									<input type="hidden" name="_target_path" value="{{ path('app_profile') }}">
+									<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 									<button type="submit" class="btn btn-lg gradient secondary btn-block waves-effect waves-light mt-20 mb-20">Login</button>
 									<div class="links">
 										<a href="{{path('app_forgot_password_request')}}">Forgot your password?</a>

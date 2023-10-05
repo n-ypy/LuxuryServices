@@ -10,3 +10,9 @@ when@prod:
     framework:
         router:
             strict_requirements: null
+
+when@dev:
+    framework:
+        router:
+            # ...
+            default_uri: "http://tp-luxuryservices.dvl.to/"

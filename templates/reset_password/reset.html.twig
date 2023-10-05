@@ -1,12 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}
+	{{parent()}}
+	| New Password
+{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
+	<div
+		class="base">
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+		<!-- Page -->
+		<div
+			class="page">
+
+			<!-- Page Header-->
+			<section class="page-title page-title-bg fixed-bg overlay dark-5 padding-top-160 padding-bottom-80">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h2 class="white-text">New password</h2>
+							<span class="white-text">Recover your account by setting a new password</span>
+							<ol class="breadcrumb">
+								<li>
+									<a href="{{ path('app_home') }}">Home</a>
+								</li>
+								<li class="active">New password</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- Page Content-->
+			<section class="section-padding gray-bg log-section">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<div class="card card-panel ptb-70 text-center">
+								{{ form_start(resetForm) }}
+								<div class="promo-info">
+									<h1 class="text-uppercase mb-30 text-extrabold font-30">Reset your password</h1>
+									<div class="input-field">
+										{{ form_widget(resetForm.plainPassword.first, {'label': false, 'id': 'new-password'}) }}
+										<label for="new-password" >New password</label>
+									</div>
+									<div class="input-field">
+										{{ form_widget(resetForm.plainPassword.second, {'label': false, 'id': 'confirm-new-password'}) }}
+										<label for="confirm-new-password" >Confirm password</label>
+									</div>
+									<button type="submit" class="btn btn-lg gradient secondary waves-effect waves-light mt-20">
+										<span>Reset<strong>
+												password</strong>
+										</span>
+									</button>
+								</div>
+								{{ form_end(resetForm) }}
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
 {% endblock %}

@@ -1,22 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}
+	{{parent()}}
+	| Reset Password
+{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
+	<div
+		class="base">
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address, and we will send you a
-                link to reset your password.
-            </small>
-        </div>
+		<!-- Page -->
+		<div
+			class="page">
 
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+			<!-- Page Header-->
+			<section class="page-title page-title-bg fixed-bg overlay dark-5 padding-top-160 padding-bottom-80">
+				<div class="container">
+					<div class="row">
+						{% for flash_error in app.flashes('reset_password_error') %}
+							<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+						{% endfor %}
+						<div class="col-md-12">
+							<h2 class="white-text">Reset password</h2>
+							<span class="white-text">Recover your  Luxury Services account</span>
+							<ol class="breadcrumb">
+								<li>
+									<a href="{{ path('app_home') }}">Home</a>
+								</li>
+								<li class="active">Reset password</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- Page Content-->
+			<section class="section-padding gray-bg log-section">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<div class="card card-panel ptb-70 text-center">
+								{{ form_start(requestForm) }}
+								<div class="promo-info">
+									<h1 class="text-uppercase mb-30 text-extrabold font-30">Forgot your password ?</h1>
+									<p class="width-60 mb-30" style="text-align: center;">Enter your email address, and we will send you a link to reset your password.</p>
+									<div class="input-field">
+										{{ form_widget(requestForm.email, {'label': false, 'id': 'email'}) }}
+										<label for="email" style="left: 46%">Email</label>
+									</div>
+									<button type="submit" class="btn btn-lg gradient secondary waves-effect waves-light mt-20">
+										<span>Send password reset<strong>
+												email</strong>
+										</span>
+									</button>
+								</div>
+								{{ form_end(requestForm) }}
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
 {% endblock %}
