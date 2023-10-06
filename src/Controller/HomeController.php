@@ -60,7 +60,8 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'allJobs' => $allJobs,
             'forms' => $formsViews,
-            'profileComplete' => $profileComplete
+            'profileComplete' => $profileComplete,
+            'home' => true
         ]);
     }
 
@@ -86,6 +87,7 @@ class HomeController extends AbstractController
         return $this->render('home/contact.html.twig', [
             'contact' => $contact,
             'form' => $form,
+            'contact' => true
         ]);
     }
 
@@ -95,7 +97,9 @@ class HomeController extends AbstractController
     #[Route('/company', name: 'app_company')]
     public function company(): Response
     {
-        return $this->render('home/company.html.twig');
+        return $this->render('home/company.html.twig', [
+            'about_us' => true
+        ]);
     }
 
 
@@ -137,7 +141,8 @@ class HomeController extends AbstractController
         return $this->render('home/jobs.html.twig', [
             'allJobs' => $allJobs,
             'forms' => $formsViews,
-            'profileComplete' => $profileComplete
+            'profileComplete' => $profileComplete,
+            'job_offers' => true
         ]);
     }
 
@@ -243,7 +248,10 @@ class HomeController extends AbstractController
                 );
                 $candidate->setUser($user->setPassword($encodedPassword));
             }
-            
+            $candidate->setProfilePicture(null);
+            $candidate->setCurriculumVitae(null);
+            $candidate->setPassportFile(null);
+
             $candidate->setCreationDateOnNotesAndMedia();
             $entityManagerInterface->persist($candidate);
             $entityManagerInterface->flush();
@@ -253,7 +261,8 @@ class HomeController extends AbstractController
             'form' => $form->createView(),
             'deleteAccountForm' => $deleteAccountForm->createView(),
             'percentProfileComplete' => $candidate->returnsPercentProfileComplete(InputBag::class),
-            'updatePwdErrMsg' =>  $updatePwdErrMsg
+            'updatePwdErrMsg' =>  $updatePwdErrMsg,
+            'profile' => true
         ]);
     }
 }

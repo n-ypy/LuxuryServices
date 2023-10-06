@@ -175,140 +175,174 @@ $(handler);
 							</div>
 							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 								<ul class="menuzord-menu pull-right light" role="navigation">
-									<li class=" dropdown">
-										{% if app.user %}
-											<a target="_self" href="{{ path('app_profile') }}">
-												<span>Profile</span>
+									{% if app.user %}
+										{% if profile is defined %}
+											<li class="active dropdown">
 											{% else %}
-												<a target="_self" href="{{ path('app_login') }}">
-													<span>Login</span>
+												<li class="dropdown">
 												{% endif %}
-											</a>
-										</li>
-									</li>
-									<li class=" dropdown">
-										{% if app.user %}
-											<a target="_self" href="{{ path('app_logout') }}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
-												<span>Logout</span>
-											{% else %}
-												<a target="_self" href="{{ path('app_register') }}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
-													<span>Sign Up</span>
-												{% endif %}
-											</a>
-										</li>
-									</li>
-								</ul>
-								<ul class="menuzord-menu pull-right light" role="navigation">
-									<li class="active dropdown">
-										<a target="_self" href="{{ path('app_home') }}">
-											<i class=""></i>
-											<span>Home</span>
+												<a target="_self" href="{{ path('app_profile') }}">
+													<span>Profile</span>
+												{% else %}
+													{% if login is defined %}
+														<li class="active dropdown">
+														{% else %}
+															<li class="dropdown">
+															{% endif %}
+															<a target="_self" href="{{ path('app_login') }}">
+																<span>Login</span>
+															{% endif %}
+														</a>
+													</li>
+												</li>
+												<li class=" dropdown">
+													{% if app.user %}
+														<a target="_self" href="{{ path('app_logout') }}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
+															<span>Logout</span>
+														{% else %}
+															<a target="_self" href="{{ path('app_register') }}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
+																<span>Sign Up</span>
+															{% endif %}
+														</a>
+													</li>
+												</li>
+											</ul>
+											<ul class="menuzord-menu pull-right light" role="navigation">
+												{% if home is defined %}
+													<li class="active dropdown">
+													{% else %}
+														<li class="dropdown">
+														{% endif %}
+														<a target="_self" href="{{ path('app_home') }}">
+															<i class=""></i>
+															<span>Home</span>
+														</a>
+													</li>
+													{% if job_offers is defined %}
+														<li class="active dropdown">
+														{% else %}
+															<li class="dropdown">
+															{% endif %}
+															<a target="_self" href="{{ path('app_jobs') }}">
+																<i class=""></i>
+																<span>Jobs offers</span>
+															</a>
+														</li>
+														{% if about_us is defined %}
+															<li class="active dropdown">
+															{% else %}
+																<li class="dropdown">
+																{% endif %}
+																<a target="_self" href="{{ path('app_company') }}">
+																	<i class=""></i>
+																	<span>About us</span>
+																</a>
+															</li>
+															{% if contact is defined %}
+																<li class="active dropdown">
+																{% else %}
+																	<li class="dropdown">
+																	{% endif %}
+																	<a target="_self" href="{{ path('app_contact') }}">
+																		<i class=""></i>
+																		<span>Contact</span>
+																	</a>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</body>
+									</body>
+								</html>
+							</header>
+						{% endblock %}
+						{% block body %}{% endblock %}
+						{% block footer %}
+							<footer class="footer footer-four">
+								<div class="primary-footer brand-bg text-center">
+									<div class="container">
+
+										<a href="#top" class="page-scroll btn-floating btn-large gradient secondary back-top waves-effect waves-light" data-section="#top">
+											<i class="material-icons">&#xE316;</i>
 										</a>
-									</li>
-									<li class=" dropdown">
-										<a target="_self" href="{{ path('app_jobs') }}">
-											<i class=""></i>
-											<span>Jobs offers</span>
-										</a>
-									</li>
-									<li class=" dropdown">
-										<a target="_self" href="{{ path('app_company') }}">
-											<i class=""></i>
-											<span>About us</span>
-										</a>
-									</li>
-									<li class=" dropdown">
-										<a target="_self" href="{{ path('app_contact') }}">
-											<i class=""></i>
-											<span>Contact</span>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</body>
-		</body>
-	</html>
-</header>{% endblock %}{% block body %}{% endblock %}{% block footer %}
-<footer class="footer footer-four">
-	<div class="primary-footer brand-bg text-center">
-		<div class="container">
 
-			<a href="#top" class="page-scroll btn-floating btn-large gradient secondary back-top waves-effect waves-light" data-section="#top">
-				<i class="material-icons">&#xE316;</i>
-			</a>
+										<ul class="social-link tt-animate ltr mt-20">
+											<li>
+												<a href="#!" target="_blank">
+													<i class="fa fa-facebook"></i>
+												</a>
+											</li>
+											<li>
+												<a href="#!" target="_blank">
+													<i class="fa fa-linkedin"></i>
+												</a>
+											</li>
+										</ul>
 
-			<ul class="social-link tt-animate ltr mt-20">
-				<li>
-					<a href="#!" target="_blank">
-						<i class="fa fa-facebook"></i>
-					</a>
-				</li>
-				<li>
-					<a href="#!" target="_blank">
-						<i class="fa fa-linkedin"></i>
-					</a>
-				</li>
-			</ul>
+										<hr class="mt-10">
 
-			<hr class="mt-10">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="brand footer-brand"></div>
 
-			<div class="row">
-				<div class="col-md-12">
-					<div class="brand footer-brand"></div>
+												<span class="copy-text">© 2023 All right reserved - by
+													<a href="https://github.com/ebusy9" target="_blank">BUSYGIN Evgenii</a>
+													-
+													<a href="#!">Terms of use</a>
 
-					<span class="copy-text">© 2023 All right reserved - by
-						<a href="https://github.com/ebusy9" target="_blank">BUSYGIN Evgenii</a>
-						-
-						<a href="#!">Terms of use</a>
+												</span>
+												<div class="footer-intro">
+													<p>Luxury Services is a leading professional recruitment consultancy specialising in the recruitment of permanent, contract and temporary positions on behalf of the world’s top employers.</p>
+												</div>
+											</div>
+											<!-- /.col-md-12 -->
+										</div>
+										<!-- /.row -->
+									</div>
+									<!-- /.container -->
+								</div>
+								<!-- /.primary-footer -->
 
-					</span>
-					<div class="footer-intro">
-						<p>Luxury Services is a leading professional recruitment consultancy specialising in the recruitment of permanent, contract and temporary positions on behalf of the world’s top employers.</p>
-					</div>
-				</div>
-				<!-- /.col-md-12 -->
-			</div>
-			<!-- /.row -->
-		</div>
-		<!-- /.container -->
-	</div>
-	<!-- /.primary-footer -->
+								<div class="secondary-footer brand-bg darken-2 text-center">
+									<div class="container">
+										<ul class="" role="navigation">
+											<li class="active dropdown">
+												<a target="_self" href="{{ path('app_home') }}">
+													<span>Home</span>
+												</a>
+											</li>
+											<li class=" dropdown">
+												<a target="_self" href="{{ path('app_jobs') }}">
+													<span>Jobs offers</span>
+												</a>
+											</li>
+											<li class=" dropdown">
+												<a target="_self" href="{{ path('app_company') }}">
+													<span>About us</span>
+												</a>
+											</li>
+											<li class=" dropdown">
+												<a target="_self" href="{{ path('app_contact') }}">
+													<span>Contact</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+									<!-- /.container -->
+								</div>
+								<!-- /.secondary-footer -->
+							</footer>
+						{% endblock %}
+						{% block bottomjavascript %}
+							<script type="text/javascript">
 
-	<div class="secondary-footer brand-bg darken-2 text-center">
-		<div class="container">
-			<ul class="" role="navigation">
-				<li class="active dropdown">
-					<a target="_self" href="{{ path('app_home') }}">
-						<span>Home</span>
-					</a>
-				</li>
-				<li class=" dropdown">
-					<a target="_self" href="{{ path('app_jobs') }}">
-						<span>Jobs offers</span>
-					</a>
-				</li>
-				<li class=" dropdown">
-					<a target="_self" href="{{ path('app_company') }}">
-						<span>About us</span>
-					</a>
-				</li>
-				<li class=" dropdown">
-					<a target="_self" href="{{ path('app_contact') }}">
-						<span>Contact</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-		<!-- /.container -->
-	</div>
-	<!-- /.secondary-footer -->
-</footer>{% endblock %}{% block bottomjavascript %}
-<script type="text/javascript">
-
-	onAppReady(function () {
+								onAppReady(function () {
 $('.preload').remove();
 });
-</script>{% endblock %}</body></html>
+							</script>
+						{% endblock %}
+					</body>
+				</body>
+			</html>
