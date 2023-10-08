@@ -28,6 +28,7 @@
 		<link rel="shortcut icon" href="{{ asset('assets/img/ico.png') }}">
 
 		{% block javascripts %}
+            {{ importmap() }}
 			<script>
 				window.isMobile = (function () {
 var check = false;
@@ -50,6 +51,7 @@ $(handler);
 
 
 		{% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
 			<link href="{{ asset('/assets/css/main.css') }}" rel="stylesheet">
 		{% endblock %}
 

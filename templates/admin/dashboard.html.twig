@@ -1,9 +1,16 @@
 {% extends "@EasyAdmin/page/content.html.twig" %}
 {% block page_title %}Test{% endblock %}
 {% block content %} 
+{{ ux_controller_link_tags() }}
 <h2>Hello</h2>
 <p>test</p>
-<pre>
-{{ render_chart(chart) }}
-</pre>
+<div class="container">
+        <div class="row">
+            <div class="col-4">
+                {{ render_chart(chart) }}
+            </div>
+        </div>
+</div>
+
+{{ importmap() }}
 {% endblock %}

@@ -41,21 +41,25 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
-        $chart->setData([
 
+        $chart->setData([
+            'labels' => ['Processed', 'Pending', 'Declined'],
             'datasets' => [
-                'labels' => ['Processed', 'Pending', 'Declined'],
                 [
-                    'label' => 'Messages',
+                    'color' => 'rgb(181, 181, 181)',
+                    'borderColor' => 'rgb(181, 181, 181)',
                     'backgroundColor' => 'rgb(255, 99, 132)',
+                    'label' => 'Messages',
                     'data' => [
-                        $this->contactRepository->findContactByContactStatusValue('Processed'), 
-                        $this->contactRepository->findContactByContactStatusValue('Pending'), 
-                        $this->contactRepository->findContactByContactStatusValue('Declined')
-                        ]
+                        count($this->contactRepository->findContactByContactStatusValue('Processed')), 
+                        count($this->contactRepository->findContactByContactStatusValue('Pending')), 
+                        count($this->contactRepository->findContactByContactStatusValue('Declined'))
+                    ],
                 ],
-            ]
+            ],
         ]);
+
+
 
 
         return $this->render('admin/dashboard.html.twig', [
