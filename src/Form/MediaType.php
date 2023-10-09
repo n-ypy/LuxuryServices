@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class MediaType extends AbstractType
 {
@@ -16,8 +17,19 @@ class MediaType extends AbstractType
             ->add('url', FileType::class, [
                 "label" => false,
                 "required" => false,
-                "data_class" => null,
+                "empty_data" => '',
                 'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5120k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                            'image/*'
+                        ],
+                        'mimeTypesMessage' => 'The format is not valid',
+                    ])
+                ],
             ])
         ;
     }

@@ -139,4 +139,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+
+    public function verifyEmailAndPasswordBeforeUpdate(?string $inputEmail, string $verfificationEmail, ?string $inputPassword): iterable
+    {
+        if ($inputEmail !== $verfificationEmail && $inputEmail !== null) //email incorrect and email not empty
+        {
+            yield 'Invalid email adress.';
+        }
+
+        if ($inputEmail === null &&  $inputPassword !== null) //email empty and password not empty
+        {
+            yield 'Email adress must not be empty.';
+        }
+
+        if ($inputEmail === $verfificationEmail && $inputPassword === null) //email correct and password empty
+        {
+            yield 'Password must not be empty.';
+        }
+    }
 }

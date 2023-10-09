@@ -17,7 +17,11 @@ use App\Entity\JobOffer;
 use App\Entity\JobType;
 use App\Entity\Media;
 use App\Entity\User;
+use App\Repository\ApplicationRepository;
+use App\Repository\CandidateRepository;
 use App\Repository\ContactRepository;
+use App\Repository\CustomerRepository;
+use App\Repository\JobOfferRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -33,26 +37,32 @@ class DashboardController extends AbstractDashboardController
     public function __construct(
         private AdminUrlGenerator $adminUrlGenerator,
         private ChartBuilderInterface $chartBuilder,
-        private ContactRepository $contactRepository
+        private ContactRepository $contactRepository,
+        private ApplicationRepository $applicationRepository,
+        private CustomerRepository $customerRepository,
+        private CandidateRepository $candidateRepository,
+        private JobOfferRepository $jobOfferRepository,
+
     ) {
     }
 
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
+        $messagesChart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
 
-        $chart->setData([
+        $messagesChart->setData([
             'labels' => ['Processed', 'Pending', 'Declined'],
             'datasets' => [
                 [
                     'color' => 'rgb(181, 181, 181)',
                     'borderColor' => 'rgb(181, 181, 181)',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
+                    'backgroundColor' => ['rgb(139, 191, 124)', 'rgb(111, 191, 241)', 'rgb(255, 148, 155)'],
+                    'hoverOffset' => '3',
                     'label' => 'Messages',
                     'data' => [
-                        count($this->contactRepository->findContactByContactStatusValue('Processed')), 
-                        count($this->contactRepository->findContactByContactStatusValue('Pending')), 
+                        count($this->contactRepository->findContactByContactStatusValue('Processed')),
+                        count($this->contactRepository->findContactByContactStatusValue('Pending')),
                         count($this->contactRepository->findContactByContactStatusValue('Declined'))
                     ],
                 ],
@@ -60,10 +70,88 @@ class DashboardController extends AbstractDashboardController
         ]);
 
 
+        $messagesChart->setOptions([
+            'plugins' => [
+                'title' => [
+                    'display' => true,
+                    'text' => 'Messages'
+                ]
+            ]
+        ]);
+
+
+        $applicationsChart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
+
+        $applicationsChart->setData([
+            'labels' => ['Accepted', 'Pending', 'Declined'],
+            'datasets' => [
+                [
+                    'color' => 'rgb(181, 181, 181)',
+                    'borderColor' => 'rgb(181, 181, 181)',
+                    'backgroundColor' => ['rgb(139, 191, 124)', 'rgb(111, 191, 241)', 'rgb(255, 148, 155)'],
+                    'label' => 'Applications',
+                    'hoverOffset' => '3',
+                    'data' => [
+                        count($this->applicationRepository->findContactByApplicationStatusValue('Accepted')),
+                        count($this->applicationRepository->findContactByApplicationStatusValue('Pending')),
+                        count($this->applicationRepository->findContactByApplicationStatusValue('Declined'))
+                    ],
+                ],
+            ],
+        ]);
+
+        $applicationsChart->setOptions([
+            'plugins' => [
+                'title' => [
+                    'display' => true,
+                    'text' => 'Applications'
+                ]
+            ]
+        ]);
+
+
+
+
+        $mixedChart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+
+        $mixedChart->setData([
+            'labels' => ['Job Offers', 'Customers', 'Candidates'],
+            'datasets' => [
+                [
+                    'borderColor' => ['rgb(139, 191, 124)', 'rgb(111, 191, 241)', 'rgb(255, 148, 155)'],
+                    'backgroundColor' => ['rgb(139, 191, 124, 0.5)', 'rgb(111, 191, 241, 0.5)', 'rgb(255, 148, 155, 0.5)'],
+                    'label' => 'Quantity',
+                    'borderWidth' => 2,
+                    'data' => [
+                        count($this->jobOfferRepository->findAll()),
+                        count($this->customerRepository->findAll()),
+                        count($this->candidateRepository->findAll())
+                    ],
+                ],
+            ],
+        ]);
+
+        $mixedChart->setOptions([
+            'plugins' => [
+                'title' => [
+                    'display' => true,
+                    'text' => 'Job Offers | Customers | Candidates'
+                ],
+                'legend' => [
+                    'display' => false
+
+                ]
+            ],
+            'aspectRatio' => '1'
+        ]);
+
+
 
 
         return $this->render('admin/dashboard.html.twig', [
-            'chart' => $chart,
+            'messagesChart' => $messagesChart,
+            'applicationsChart' => $applicationsChart,
+            'mixedChart' => $mixedChart,
         ]);
     }
 

@@ -128,5 +128,4 @@ class Media
         return $this->url;
     }
 
-
 }

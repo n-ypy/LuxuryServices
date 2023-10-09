@@ -1,0 +1,23 @@
+{% block form_errors %}
+	{% if errors|length > 0 %}
+		{% if compound %}
+			{# ... display the global form errors #}
+			<div class="col-md-12 alert alert-danger" role="alert">
+				<ul>
+					{% for error in errors %}
+						<li>{{ error.message }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% else %}
+			{# ... display the errors for a single field #}
+			<div class="col-md-12 alert alert-danger" role="alert">
+				<ul>
+					{% for error in errors %}
+						<li>{{ error.message }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	{% endif %}
+{% endblock form_errors %}

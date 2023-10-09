@@ -12,6 +12,7 @@ use App\Form\DeleteAccountType;
 use App\Repository\ApplicationStatusRepository;
 use App\Repository\ContactStatusRepository;
 use App\Repository\JobOfferRepository;
+use App\Service\FileUploader;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -200,10 +201,10 @@ class HomeController extends AbstractController
 
 
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
-    public function profile(Security $security, Request $request, EntityManagerInterface $entityManagerInterface, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function profile(FileUploader $fileUploader, Security $security, Request $request, EntityManagerInterface $entityManagerInterface, UserPasswordHasherInterface $userPasswordHasher): Response
     {
-
-        $deleteAccountForm = $this->createForm(DeleteAccountType::class,  $security->getUser());
+        $user = $security->getUser();
+        $deleteAccountForm = $this->createForm(DeleteAccountType::class, $user);
         $deleteAccountForm->handleRequest($request);
 
         if ($deleteAccountForm->isSubmitted() && $deleteAccountForm->isValid()) {
@@ -218,39 +219,43 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $passportFile = $form->get('passportFile')->get('url')->getData();
+            $profilePicture = $form->get('profilePicture')->get('url')->getData();
+            $curriculumVitae = $form->get('curriculumVitae')->get('url')->getData();
+
+            if($passportFile){
+                $fileName = $fileUploader->upload($passportFile, FileUploader::PASSPORT_DIR);
+                $media = $candidate->getPassportFile();
+                $media->setUrl($fileName);
+                $candidate->setPassportFile($media);
+            }
+
+            if($profilePicture){
+                $fileName = $fileUploader->upload($profilePicture, FileUploader::PROFILE_PICTURE_DIR);
+                $media = $candidate->getProfilePicture();
+                $media->setUrl($fileName);
+                $candidate->setProfilePicture($media);
+            }
+
+            if($curriculumVitae){
+                $fileName = $fileUploader->upload($curriculumVitae, FileUploader::CV_DIR);
+                $media = $candidate->getCurriculumVitae();
+                $media->setUrl($fileName);
+                $candidate->setCurriculumVitae($media);
+            }
 
             $userEmail = $form->get("user")->get("email")->getData();
             $userPasdsword = $form->get("user")->get("password")->getData();
 
 
-            if ($userEmail !== $security->getUser()->getEmail() && $userEmail !== null) //email incorrect and email not empty
+            if(iterator_count($user->verifyEmailAndPasswordBeforeUpdate($userEmail, $user->getEmail(), $userPasdsword)) === 0 && $userEmail !== null && $userPasdsword !== null)
             {
-                $updatePwdErrMsg = 'Invalid email adress.';
-            }
-
-            if ($userEmail === null &&  $userPasdsword !== null) //email empty and password not empty
-            {
-                $updatePwdErrMsg = 'Email adress must not be empty.';
-            }
-
-            if ($userEmail === $security->getUser()->getEmail() && $userPasdsword === null) //email correct and password empty
-            {
-                $updatePwdErrMsg = 'Password must not be empty.';
-            }
-
-            if($updatePwdErrMsg === null && $userEmail !== null && $userPasdsword !== null )
-            {
-                $user = $security->getUser();
-
                 $encodedPassword = $userPasswordHasher->hashPassword(
                     $user,
                     $userPasdsword
                 );
                 $candidate->setUser($user->setPassword($encodedPassword));
             }
-            $candidate->setProfilePicture(null);
-            $candidate->setCurriculumVitae(null);
-            $candidate->setPassportFile(null);
 
             $candidate->setCreationDateOnNotesAndMedia();
             $entityManagerInterface->persist($candidate);
