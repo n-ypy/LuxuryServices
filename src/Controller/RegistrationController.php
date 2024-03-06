@@ -32,6 +32,7 @@ class RegistrationController extends AbstractController
             );
 
             $user->setIsActive();
+            $user->setRoles(['ROLE_USER']);
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -42,8 +43,8 @@ class RegistrationController extends AbstractController
             
             $entityManager->persist($candidate);
             $entityManager->flush();
-
-            $security->login($user);
+            
+            $security->login($user, 'form_login', 'main');
 
             return $this->redirectToRoute('app_profile');
         }

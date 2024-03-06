@@ -222,26 +222,34 @@ class HomeController extends AbstractController
             $passportFile = $form->get('passportFile')->get('url')->getData();
             $profilePicture = $form->get('profilePicture')->get('url')->getData();
             $curriculumVitae = $form->get('curriculumVitae')->get('url')->getData();
-
+            
             if($passportFile){
                 $fileName = $fileUploader->upload($passportFile, FileUploader::PASSPORT_DIR);
                 $media = $candidate->getPassportFile();
                 $media->setUrl($fileName);
                 $candidate->setPassportFile($media);
-            }
+            } elseif ($candidate->getPassportFile()->getUrl() === null) {
+                $candidate->setPassportFile(null);
+            } 
+            
 
             if($profilePicture){
                 $fileName = $fileUploader->upload($profilePicture, FileUploader::PROFILE_PICTURE_DIR);
                 $media = $candidate->getProfilePicture();
                 $media->setUrl($fileName);
                 $candidate->setProfilePicture($media);
+            } elseif ($candidate->getProfilePicture()->getUrl() === null) {
+                $candidate->setProfilePicture(null);
             }
+
 
             if($curriculumVitae){
                 $fileName = $fileUploader->upload($curriculumVitae, FileUploader::CV_DIR);
                 $media = $candidate->getCurriculumVitae();
                 $media->setUrl($fileName);
                 $candidate->setCurriculumVitae($media);
+            } elseif ($candidate->getCurriculumVitae()->getUrl() === null) {
+                $candidate->setCurriculumVitae(null);
             }
 
             $userEmail = $form->get("user")->get("email")->getData();

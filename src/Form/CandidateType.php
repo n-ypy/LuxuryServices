@@ -23,7 +23,7 @@ class CandidateType extends AbstractType
                 "required" => false,
             ])
             ->add('country', CountryType::class, [
-                'alpha3' => true,
+                'alpha3' => false,
                 'placeholder' => '',
                 "required" => false
             ])

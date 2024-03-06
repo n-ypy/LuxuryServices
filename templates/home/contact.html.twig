@@ -52,7 +52,7 @@
 										{{ form_label(form.firstName) }}
 										{{ form_errors(form.firstName) }}
 										{# <input required="required" name="firstname" type="text">
-										<label for="firstname">First name</label> #}
+																				<label for="firstname">First name</label> #}
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -61,7 +61,7 @@
 										{{ form_label(form.lastName) }}
 										{{ form_errors(form.lastName) }}
 										{# <input required="required" name="lastname" type="text">
-										<label for="lastname">Last name</label> #}
+																				<label for="lastname">Last name</label> #}
 									</div>
 								</div>
 							</div>
@@ -72,7 +72,7 @@
 										{{ form_label(form.email) }}
 										{{ form_errors(form.email) }}
 										{# <input required="required" name="email" type="email">
-										<label for="email">Email</label> #}
+																				<label for="email">Email</label> #}
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -81,7 +81,7 @@
 										{{ form_label(form.phoneNumber) }}
 										{{ form_errors(form.phoneNumber) }}
 										{# <input required="required" name="phone" type="tel">
-										<label for="phone">Phone Number</label> #}
+																				<label for="phone">Phone Number</label> #}
 									</div>
 								</div>
 							</div>
@@ -92,7 +92,7 @@
 										{{ form_label(form.content) }}
 										{{ form_errors(form.content) }}
 										{# <textarea class="materialize-textarea" required="required" name="message" cols="50" rows="10"></textarea>
-										<label for="message">Message</label> #}
+																				<label for="message">Message</label> #}
 									</div>
 								</div>
 							</div>
@@ -142,5 +142,37 @@
 
 {% block bottomjavascript %}
 {{ parent() }}
-<script src={{ asset('assets/js/maps.js') }}>
-	{% endblock %}
+<script>
+	(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+	    key: "API_KEY",
+	});
+	
+	
+	let map;
+	
+	async function initMap() {
+	        const position = { lat: 46.035368, lng: 4.0750154 };
+	
+	        const { Map } = await google.maps.importLibrary("maps");
+	        const { Marker } = await google.maps.importLibrary("marker");
+	
+	        let map = new Map(document.getElementById("myMap"), {
+	            zoom: 15,
+	            center: position,
+	            mapId: "af77c6108ef9964a",
+	            disableDefaultUI: true,
+	            zoomControl: true,
+	            fullscreenControl: true
+	        });
+	
+	        new google.maps.marker.AdvancedMarkerElement({
+	            position: position,
+	            map,
+	            title: "Luxury Services",
+	        });
+	}
+	
+	
+	initMap();
+	</script>
+		{% endblock %}

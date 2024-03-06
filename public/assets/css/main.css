@@ -2903,7 +2903,7 @@ Vertical Tab
 }
 
 .checkbox ul li::before {
-    content: url("../img/kim_jong_un.png");
+    content: "🤬 ";
 }
 
 #errormsg{
