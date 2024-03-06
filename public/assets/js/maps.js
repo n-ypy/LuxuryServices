@@ -6,26 +6,25 @@
 let map;
 
 async function initMap() {
+        const position = { lat: 46.035368, lng: 4.0750154 };
 
-    const position = { lat: 46.035368, lng: 4.0750154 };
+        const { Map } = await google.maps.importLibrary("maps");
+        const { Marker } = await google.maps.importLibrary("marker");
 
-    const { Map } = await google.maps.importLibrary("maps");
-    const { Marker } = await google.maps.importLibrary("marker");
+        let map = new Map(document.getElementById("myMap"), {
+            zoom: 15,
+            center: position,
+            mapId: "af77c6108ef9964a",
+            disableDefaultUI: true,
+            zoomControl: true,
+            fullscreenControl: true
+        });
 
-    let map = new Map(document.getElementById("myMap"), {
-        zoom: 15,
-        center: position,
-        mapId: "af77c6108ef9964a",
-        disableDefaultUI: true,
-        zoomControl: true,
-        fullscreenControl: true
-    });
-
-    new Marker({
-        position: position,
-        map,
-        title: "Luxury Services",
-    });
+        new google.maps.marker.AdvancedMarkerElement({
+            position: position,
+            map,
+            title: "Luxury Services",
+        });
 }
 
 

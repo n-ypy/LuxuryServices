@@ -37,7 +37,7 @@ class UserCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            BooleanField::new('is Active', 'Active'),
+            BooleanField::new('isActive', 'Active'),
             EmailField::new('email')->hideOnForm(),
         ];
     }

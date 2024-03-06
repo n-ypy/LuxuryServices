@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Service;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -9,14 +8,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
 {
-    public const PASSPORT_DIR = '/passport//';
-    public const CV_DIR = '/cv//';
-    public const PROFILE_PICTURE_DIR = '/profile_picture//';
-
+    public const PASSPORT_DIR = '/passport/';
+    public const CV_DIR = '/cv/';
+    public const PROFILE_PICTURE_DIR = '/profile_picture/';
 
     public function __construct(
         private string $targetDirectory,
-        private SluggerInterface $slugger,
+        private SluggerInterface $slugger
     ) {
     }
 
@@ -24,13 +22,12 @@ class FileUploader
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
-        $fileName = $subDir . $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+        $fileName = $subDir . $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-            
-            
+
         }
 
         return $fileName;

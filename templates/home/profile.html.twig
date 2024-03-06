@@ -34,7 +34,7 @@
 								<h4>
 									<img src="https://i.imgur.com/s9bPVaK.gif" style="height: 80px; width: 201px;">
 									&nbsp;
-									&nbsp; Hooray ! Your profile is complete.
+																																																																																																																																																																																				&nbsp; Hooray ! Your profile is complete.
 								</h4>
 								<div class="c100 p{{percentProfileComplete}} small complete ">
 									<span>{{percentProfileComplete}}%</span>
@@ -49,7 +49,7 @@
 								<h4>
 									<img src="https://media.giphy.com/media/YmVNzDnboB0RQEpmLr/giphy.gif" style="height: 80px; width: 201px;">
 									&nbsp;
-									&nbsp;You must complete your profile to apply for offers!
+																																																																																																																																																																																				&nbsp;You must complete your profile to apply for offers!
 								</h4>
 								<div class="c100 p{{percentProfileComplete}} small complete ">
 									<span>{{percentProfileComplete}}%</span>
@@ -111,12 +111,12 @@
 												Passport</span>
 											{{form_widget(form.passportFile.url, {'label': false, 'id': "passport", 'attr': {'size': "5240000", 'accept': ".pdf,.jpg,.png,.gif,.bmp", }})}}
 										</div>
-										<div class="existing-file">
+										<div class="existing-file" style="display:none" id="passport-file-name">
 											<a href="#!" target="_blank">
 												<i class="material-icons">&#xE24D;</i>
 												passeport.jpg</a>
 										</div>
-										<div class="file-path-wrapper">
+										<div class="file-path-wrapper" style="display:none" id="passport-file-name-wrapper">
 											<input class="file-path validate" type="text" placeholder="Upload your passport" readonly>
 										</div>
 										<div class="row">
@@ -172,12 +172,12 @@
 											Photo</span>
 										{{form_widget(form.profilePicture.url, {'label': false, 'id': "photo", 'attr': {'size': "5240000", 'accept': ".pdf,.jpg,.png,.gif,.bmp", }})}}
 									</div>
-									<div class="existing-file">
+									<div class="existing-file" id="pic-file-name" style="display:none">
 										<a href="#!" target="_blank">
 											<i class="material-icons">&#xE24D;</i>
 											profil_picture.jpg</a>
 									</div>
-									<div class="file-path-wrapper">
+									<div class="file-path-wrapper" id="pic-file-name-wrapper" style="display:none">
 										<input class="file-path validate" type="text" placeholder="Upload your ID photo" readonly>
 									</div>
 									<div class="row">
@@ -191,12 +191,12 @@
 											CV</span>
 										{{form_widget(form.curriculumVitae.url, {'label': false, 'id': "cv", 'attr': {'size': "5240000", 'accept': ".pdf,.jpg,.png,.gif,.bmp", }})}}
 									</div>
-									<div class="existing-file">
+									<div class="existing-file" id="cv-file-name" style="display:none">
 										<a href="#!" target="_blank">
 											<i class="material-icons">&#xE24D;</i>
 											CV.pdf</a>
 									</div>
-									<div class="file-path-wrapper">
+									<div class="file-path-wrapper" id="cv-file-name-wrapper" style="display:none">
 										<input class="file-path validate" type="text" placeholder="Upload your Curriculum Vitae" readonly>
 									</div>
 									<div class="row">
@@ -323,5 +323,44 @@ event.preventDefault()
 document.getElementById('candidateForm').submit()
 })
 })
+
+const cv = document.querySelector('#cv')
+const photo = document.querySelector('#photo')
+const passport = document.querySelector('#passport')
+
+photo.onchange = function () {
+	const file = photo.files[0]
+	setDisplayNull('#pic-file-name')
+	setDisplayNull('#pic-file-name-wrapper')
+	setFilename('#pic-file-name', this.value.replace(/.*[\/\\]/, ''), file)
+};
+
+cv.onchange = function () {
+	const file = cv.files[0]
+	setDisplayNull('#cv-file-name')
+	setDisplayNull('#cv-file-name-wrapper')
+	setFilename('#cv-file-name', this.value.replace(/.*[\/\\]/, ''), file)
+};
+
+passport.onchange = function () {
+	const file = passport.files[0]
+	setDisplayNull('#passport-file-name')
+	setDisplayNull('#passport-file-name-wrapper')
+	setFilename('#passport-file-name', this.value.replace(/.*[\/\\]/, ''), file)
+};
+
+function setDisplayNull(selector) {
+	document.querySelector(selector).style.display = null
+}
+
+function setFilename(el, filename, file) {
+	const parent = document.querySelector(el)
+	const aEl = parent.querySelector('a')
+	aEl.innerHTML = `<i class="material-icons">&#xE24D;</i>${filename}`
+	if (file) {
+		aEl.href = URL.createObjectURL(file)
+		aEl.download = file.name
+	}
+}
 	</script>
 {% endblock %}
