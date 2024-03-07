@@ -170,7 +170,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Applications', 'fa-solid fa-clipboard', Application::class);
         yield MenuItem::linkToCrud('Job offers', 'fas fa-briefcase', JobOffer::class);
         yield MenuItem::linkToCrud('Customers', 'fa-solid fa-user-tie', Customer::class);
-        yield MenuItem::linkToCrud('Candidates', 'fa-solid fa-poo', Candidate::class);
+        yield MenuItem::linkToCrud('Candidates', 'fa-solid fa-address-card', Candidate::class);
         yield MenuItem::section('MISC');
         yield MenuItem::linkToCrud('Users', 'fa-solid fa-user', User::class);
         yield MenuItem::linkToCrud('Notes', 'fa-solid fa-note-sticky', AdminNotes::class)->setController(AdminNotesCrudController::class);
