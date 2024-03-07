@@ -4,6 +4,13 @@ LuxuryServices is a platform designed to simulate a professional recruitment con
 
 Visit [LuxuryServices](https://luxuryservices.evgenii.fr/) to access the website.
 
+## Screenshots 📸
+
+![home page screenshot](https://raw.githubusercontent.com/enypy/ReadMeAssetsVault/main/LuxuryServices/home_page.png)
+![job offers page screenshot](https://raw.githubusercontent.com/enypy/ReadMeAssetsVault/main/LuxuryServices/job_offers_page.png)
+![login page screenshot](https://raw.githubusercontent.com/enypy/ReadMeAssetsVault/main/LuxuryServices/login_page.png)
+![admin page screenshot](https://raw.githubusercontent.com/enypy/ReadMeAssetsVault/main/LuxuryServices/admin_page.png)
+
 ## Features 🚀
 
 - User authentication system (login, register, password reset by email)
