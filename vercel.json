@@ -10,6 +10,10 @@
             "dest": "\/api\/assets.php?path=\/$2"
         },
         {
+            "src": "\/(bundles)\/(.*)$",
+            "dest": "\/api\/assets.php?path=\/$2"
+        },
+        {
             "src": "\/(.*)",
             "dest": "\/api\/index.php"
         }
