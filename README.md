@@ -41,25 +41,19 @@ git clone https://github.com/enypy/LuxuryServices.git
 composer install
 ```
 
-3. Set up your MAILER_DSN variable:
+3. Set up your MAILER_DSN, GOOGLE_MAPS_API_KEY, DATABASE_URL, FREEIMG_API_KEY variables:
 
 ```bash
 nano .env
 ```
 
-4. Set up your Google Maps API KEY:
-
-```bash
-nano templates/home/contact.html.twig
-```
-
-5. Run migrations to set up the database:
+4. Run migrations to set up the database:
 
 ```bash
 php bin/console doctrine:migrations:migrate
 ```
 
-6. Serve the application:
+5. Serve the application:
 
 ```bash
 symfony serve
